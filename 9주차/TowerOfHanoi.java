@@ -3,19 +3,15 @@ package week9;
 import java.util.Scanner;
 
 public class TowerOfHanoi {
-    static String resultStr = "";
-    static int resultCnt = 0;
     public static void main(String[] args) {
         int towerHeight = new Scanner(System.in).nextInt();
-        new TowerOfHanoi().move(1,3,towerHeight);
-        System.out.println(resultCnt);
-        System.out.print(resultStr);
+        TowerOfHanoi towerOfHanoi = new TowerOfHanoi();
+        towerOfHanoi.moveCount(towerHeight);
+        towerOfHanoi.move(1,3,towerHeight);
     }
     public void move(int start,int end,int phase){
         if(phase == 1) {  //1 하나만 옮기면 되는 상황
-            //System.out.println(start + " " + end);
-            resultStr += new Integer(start).toString() + " " + new Integer(end).toString() + "\n";  //경로 변경 내역 추가
-            resultCnt++;    //옮긴 횟수 증가
+            System.out.println(start + " " + end);
         }
         else{
             int 선택안된친구 = notSelected(start,end);
@@ -36,5 +32,9 @@ public class TowerOfHanoi {
                 break;
             }
         return result;
+    }
+    public void moveCount(int height){
+        int result = (int)Math.pow(2,height) - 1;
+        System.out.println(result);
     }
 }
