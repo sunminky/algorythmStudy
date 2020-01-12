@@ -3,15 +3,19 @@ package week9;
 import java.util.Scanner;
 
 public class TowerOfHanoi {
+    static StringBuilder stringBuilder = new StringBuilder();
+    static int result = 0;
     public static void main(String[] args) {
         int towerHeight = new Scanner(System.in).nextInt();
         TowerOfHanoi towerOfHanoi = new TowerOfHanoi();
-        towerOfHanoi.moveCount(towerHeight);
         towerOfHanoi.move(1,3,towerHeight);
+        System.out.println(result);
+        System.out.println(stringBuilder);
     }
     public void move(int start,int end,int phase){
         if(phase == 1) {  //1 하나만 옮기면 되는 상황
-            System.out.println(start + " " + end);
+            stringBuilder.append(start + " " + end + "\n");
+            result++;
         }
         else{
             int 선택안된친구 = notSelected(start,end);
