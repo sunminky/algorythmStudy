@@ -5,6 +5,7 @@ public class WordChange {
         String[] words = {"hot", "dot", "dog", "lot", "log", "cog","sot","cok","pot"};
         int ret = new WordChange().solution("hit","cog",words);
         System.out.println(ret);
+
     }
     public int solution(String begin, String target, String[] words) {
         int answer = 0;
