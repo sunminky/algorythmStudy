@@ -1,4 +1,4 @@
-package stack;
+package ForCodingTest.stack;
 
 public class Top {
     public int[] solution(int[] heights) {
