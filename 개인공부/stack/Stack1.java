@@ -1,4 +1,4 @@
-package stack;
+package ForCodingTest.stack;
 
 import java.util.Stack;
 

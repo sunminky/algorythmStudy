@@ -1,4 +1,4 @@
-package hash;
+package ForCodingTest.hash;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
