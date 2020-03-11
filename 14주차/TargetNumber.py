@@ -1,7 +1,5 @@
 def solution(numbers, target):
     answer = 0
-    numbers.sort()
-    numbers.reverse()   #내림차순으로 정렬합니다
     goal = int((sum(numbers) - target)/2) + target  #x+타겟 과 x 로 만들어 줍니다
     for i in range(len(numbers)):
         answer += recursive(i,0,numbers,goal)
