@@ -7,7 +7,7 @@ if __name__ != "__main__" :
 N, D = input().split()
 N = int(N)  #개미들의 개수
 D = int(D)  #줄이고 싶은 반지름 수
-ant = list(map(int, input().split()))   #개미들 위치 저장
+ant = list(map(int, sys.stdin.readline().split()))   #개미들 위치 저장
 min = sys.maxsize   #최소로 죽여야 하는 개미
 killIndicator = 0   #개미를 앞에서 부터 어디까지 죽였는가 표시
 
