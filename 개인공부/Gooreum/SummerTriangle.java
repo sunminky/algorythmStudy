@@ -1,3 +1,9 @@
+/*https://level.goorm.io/exam/49087/%EC%97%AC%EB%A6%84%EC%9D%98-%EB%8C%80%EC%82%BC%EA%B0%81%ED%98%95/quiz/1*/
+/*수학공식들
+* https://freshrimpsushi.tistory.com/482        //코사인의 덧셈 법칙
+* https://blog.naver.com/dalsapcho/20131270309  //삼각형의 너비 구하는 공식
+* https://ko.wikipedia.org/wiki/%EC%BD%94%EC%82%AC%EC%9D%B8_%EB%B2%95%EC%B9%99  //제 2코싸인 법칙
+* */
 package goorm;
 
 import java.util.Scanner;
