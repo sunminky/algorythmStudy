@@ -51,9 +51,7 @@ public class PrintStar10 {
     public void printArr(){
         StringBuilder stringBuilder = new StringBuilder();
         for(int i=0;i<arr.length;i++){  //세로 출력
-            for(int j=0;j<arr[i].length;j++){   //가로 출력
-                stringBuilder.append(arr[i][j]);
-            }
+            stringBuilder.append(arr[i]);
             stringBuilder.append('\n');
         }
         System.out.println(stringBuilder);
