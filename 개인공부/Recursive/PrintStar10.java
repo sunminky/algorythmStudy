@@ -1,6 +1,7 @@
 /*https://www.acmicpc.net/problem/2447*//*재귀로 푸는 문제*/
 package BeakJoon;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class PrintStar10 {
@@ -15,10 +16,8 @@ public class PrintStar10 {
     }
     public void init(int n){
         //char 배열 초기화하기
-        for(int i=0;i<arr.length;i++){  //세로 출력
-            for(int j=0;j<arr[i].length;j++){   //가로 출력
-                arr[i][j] = 32;
-            }
+        for(int i=0;i<arr.length;i++){
+            Arrays.fill(arr[i],' ');
         }
         for(int i=0;i<3;i++){   //세로 3번 반복
             for(int j=0;j<3;j++){   //가로 3번 반복
