@@ -20,16 +20,11 @@ public class PrintStar10 {
                 arr[i][j] = 32;
             }
         }
-
-        if(n == 3)
-            recursive(3,0,0);
-        else{
-            for(int i=0;i<3;i++){   //세로 3번 반복
-                for(int j=0;j<3;j++){   //가로 3번 반복
-                    if((i == 1) && (j == 1))     //가운데 아니면 탐색계속
-                        continue;
-                    recursive(n/3,j*n/3,i*n/3);
-                }
+        for(int i=0;i<3;i++){   //세로 3번 반복
+            for(int j=0;j<3;j++){   //가로 3번 반복
+                if((i == 1) && (j == 1))     //가운데 아니면 탐색계속
+                    continue;
+                recursive(n/3,j*n/3,i*n/3);
             }
         }
     }
