@@ -4,9 +4,6 @@ package BeakJoon;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import java.util.Scanner;
-import java.util.Arrays;
-
 public class PrintStar10 {
     public static char arr[][];
     public static void main(String[] args) {
