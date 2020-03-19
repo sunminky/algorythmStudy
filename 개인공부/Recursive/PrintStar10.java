@@ -4,6 +4,9 @@ package BeakJoon;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import java.util.Scanner;
+import java.util.Arrays;
+
 public class PrintStar10 {
     public static char arr[][];
     public static void main(String[] args) {
@@ -19,11 +22,16 @@ public class PrintStar10 {
         for(int i=0;i<arr.length;i++){
             Arrays.fill(arr[i],' ');
         }
-        for(int i=0;i<3;i++){   //세로 3번 반복
-            for(int j=0;j<3;j++){   //가로 3번 반복
-                if((i == 1) && (j == 1))     //가운데 아니면 탐색계속
-                    continue;
-                recursive(n/3,j*n/3,i*n/3);
+
+        if(n == 3)
+            recursive(3,0,0);
+        else{
+            for(int i=0;i<3;i++){   //세로 3번 반복
+                for(int j=0;j<3;j++){   //가로 3번 반복
+                    if((i == 1) && (j == 1))     //가운데 아니면 탐색계속
+                        continue;
+                    recursive(n/3,j*n/3,i*n/3);
+                }
             }
         }
     }
@@ -50,7 +58,7 @@ public class PrintStar10 {
     }
     public void printArr(){
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i=0;i<arr.length;i++){  //세로 출력
+        for(int i=0;i<arr.length;i++){
             stringBuilder.append(arr[i]);
             stringBuilder.append('\n');
         }
