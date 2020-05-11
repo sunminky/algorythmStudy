@@ -4,37 +4,37 @@ import java.util.Arrays;
 
 public class Budget {
     public static void main(String[] args) {
-        int[] arr = {120,150,140,110,130,125,122,129};
-        Arrays.sort(arr);
-        System.out.println(arr[new Budget().binSearch(arr,0,110)]);
+        int[] arr = {1, 2, 3, 4, 5};
+        System.out.println(new Budget().solution(arr,30));
     }
     public int solution(int[] budgets, final int M) {
-        int answer = 0;
-        int satisfied = 0;
+        int sum = M;
+        int indicator = 0;
+        int denominator = budgets.length;
+        int quota = sum / denominator;    //몫
+        int rest = sum % denominator;     //나머지
         Arrays.sort(budgets);
-        return answer;
-    }
-    public int binSearch(int[] budgets,int satisfied,int data){
-        int len = budgets.length - 1;
-        int index = (len + satisfied) / 2;
-        while (true){
-            if(budgets[index] <= data && budgets[index+1] > data)
-                break;
-            //오른쪽 == 왼쪽
-            if(index == satisfied)  //더 작은 숫자 없음
-                return -1;
-            if(budgets[index] > data) { //더 작아
-                len = index;
-                index = (satisfied + index) / 2;
-            }
-            else {  //더 커
-                satisfied = index + 1;
-                index = index + (len - satisfied) / 2;
-            }
-            if(index == len - 1)    //더 큰 숫자 없음
-                return -2;
 
+        if(budgets[0]>quota)   //예산이 쪼들림
+            return quota;
+
+        while (true){
+            for (int i=indicator;i<budgets.length;i++){
+                indicator = i;  //현재 몫으로 어디까지 만족시키는지
+                if(budgets[i] <= quota)
+                    rest = rest + quota - budgets[i];   //요구하는 예산이 몫보다 작으면 나머지에 더해줌
+                else{
+                    denominator = budgets.length - i;   //요구하는 예산이 몫보다 더 큰 사람들
+                    break;
+                }
+            }
+            if(indicator == budgets.length-1)   //예산이 충분함
+                return budgets[budgets.length-1];
+            if(rest / denominator == 0)     //더 이상 몫을 올릴수 없음
+                break;
+            quota += rest / denominator;    //요구하는 예산이 몫보다 작은 사람들 것을 나눠먹는다
+            rest = rest % denominator;
         }
-        return index;
+        return quota;
     }
 }
