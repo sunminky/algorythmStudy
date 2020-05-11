@@ -15,9 +15,6 @@ public class Budget {
         int rest = sum % denominator;     //나머지
         Arrays.sort(budgets);
 
-        if(budgets[0]>quota)   //예산이 쪼들림
-            return quota;
-
         while (true){
             for (int i=indicator;i<budgets.length;i++){
                 indicator = i;  //현재 몫으로 어디까지 만족시키는지
