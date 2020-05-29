@@ -1,20 +1,21 @@
-def find_maximum(arr, n):
-    if n <= 0:
-        return -1111
-
-    max_at = arr[0]  # Maximum value that ends at arr[i]
-    min_at = arr[0]  # Minimum value that ends at arr[i]
-    max_value = max_at;
-
-    for i in range(n):
-        prev_max_at = max_at
-        prev_min_at = min_at
-        max_at = max(arr[i], arr[i] * prev_min_at, arr[i] * prev_max_at)
-        min_at = min(arr[i], arr[i] * prev_min_at, arr[i] * prev_max_at)
-        max_value = max(max_value, max_at)
-
-    return max_value
-
 if __name__ == "__main__":
-    answer = find_maximum([-6,12,-7,0,14,-7,5],7)
+    arr = [-6,12,-7,0,14,-7,5]
+
+    maxVal = arr[0] #현재 가장 큰 곱 저장
+    maxMul = arr[0] #양의 정수만 곱해져서 제일 큰 최대곱
+    minMul = arr[0] #음의 정수가 곱해져서 제일 작은 최소곱
+
+    for i in range(len(arr)):
+        prevMax = maxMul    #이전 최대 곱
+        prevMin = minMul    #이전 최소 곱
+    
+        #3가지 경우가 있다.
+        '''1. 이전의 요소들 다 버리고 현재요소부터 시작
+            2. 이전의 최대곱과 현재 요소를 곱함
+            3. 이전의 최소곱과 현재 요소를 곱함'''
+        maxMul = max(arr[i], arr[i] * prevMax, arr[i] * prevMin)
+        minMul = min(arr[i], arr[i] * prevMax, arr[i] * prevMin)
+        maxVal = max(maxVal, maxMul)
+
+    answer = maxVal
     print(answer)
