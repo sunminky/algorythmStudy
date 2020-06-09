@@ -1,13 +1,13 @@
 import math
 
 class Circle:
-    def __init__(self,radius):  #객체를 만들때 반지름을 입력받음
-        self.radius = radius   
+    def __init__(self,radius):
+        self.radius = radius
 
-    def calcPerimeter(self):    #원의 길이를 구함
+    def calcPerimeter(self):
         return math.pi * 2 * self.radius
-    
-    def calcArea(self): #원의 넓이를 구함
+
+    def calcArea(self):
         return math.pi * self.radius * self.radius
 
 if __name__ == '__main__':
