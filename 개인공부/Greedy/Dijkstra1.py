@@ -1,7 +1,7 @@
 # https://level.goorm.io/exam/43211/%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-dijkstra-s-algorithm/quiz/1
 import sys
 
-def MinimunWeightIndex(unvisited, nodeValues):
+def MinimunWeightIndex(unvisited, nodeValues):  #최적화 필요(시간복잡도 n임)
     min = sys.maxsize
     minIdx = unvisited[0]
     for _,index in enumerate(unvisited):
@@ -10,7 +10,7 @@ def MinimunWeightIndex(unvisited, nodeValues):
             minIdx = index
     return minIdx
 
-def updateWeight(index, nodeInfo, nodeValues):
+def updateWeight(index, nodeInfo, nodeValues):  #최적화 필요(시간복잡도 n임)
     for i, value in enumerate(nodeInfo[index]): #이 노드와 연결된 정점을 찾는 중
         if not value == sys.maxsize and nodeValues[i] > value + nodeValues[index]:  #더 짧은 경로 발견시
             nodeValues[i] = value + nodeValues[index]
@@ -19,7 +19,7 @@ def updateWeight(index, nodeInfo, nodeValues):
 
 if __name__ == '__main__':
     nodeNum, edgeNum = map(int, input().split())  # 노드개수와 간선개수 입력
-    nodeInfo = [[sys.maxsize for i in range(nodeNum)] for j in range(nodeNum)]
+    nodeInfo = [[sys.maxsize for i in range(nodeNum)] for j in range(nodeNum)]  #노드간 거리정보 저장, 최적화필요(공간복잡도 n**2)
     nodeValues = [sys.maxsize for i in range(nodeNum)]  #간선의 가중치 저장
     unvisited = [i for i in range(nodeNum)] #방문 안한 노드 저장
 
@@ -42,4 +42,4 @@ if __name__ == '__main__':
         nodeValues = updateWeight(curindex,nodeInfo,nodeValues)
 
     for i,value in enumerate(nodeValues):
-        print("{seq}:{value}".format(seq=i+1, value=value))
+        print("{seq}: {value}".format(seq=i+1, value=value))
