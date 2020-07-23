@@ -2,27 +2,12 @@ package week5;
 
 public class TileDecoration {
     public long solution(int N) {
-        long answer = 0;
-        answer = getSuround(N);
-        return answer;
-    }
-    public int getSuround(int N) {
-        int tmp = 0;
-        int[] prev = {1,1};
-        int area = 6;
+        long fibo[] = new long[80];
+        fibo[0] = fibo[1] = 1;
 
-        if(N == 1)
-            return 4;
-        if(N == 2)
-            return 6;
-
-        for(int i = 2;i < N;i++){
-            tmp = prev[0] + prev[1];
-            area =  area + tmp * 2;
-            prev[0] = prev[1];
-            prev[1] = tmp;
+        for(int i=2;i<=N;i++){
+            fibo[i] = fibo[i-1] + fibo[i-2];
         }
-
-        return area;
+        return (fibo[N-1]+fibo[N])*2;
     }
 }
