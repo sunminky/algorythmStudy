@@ -23,8 +23,8 @@ def solution(N, number):
                         temp.add(n2 // n1)
                     # temp.add(n2 * n1) #n1 * n2 == n2 * n1 계산이 중복됨
                     
-        if number in temp:  #이번 턴에 구한 값 중 타겟이 있을 경우
-            return i
+            if number in temp:  #이번 턴에 구한 값 중 타겟이 있을 경우
+                return i
         store.append(temp)
         
     return -1
