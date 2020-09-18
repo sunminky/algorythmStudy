@@ -10,6 +10,7 @@ def savaToCSV(data, filename="no_name.csv"):
     dataFrame = pd.DataFrame(data, columns=column_name)
     dataFrame.to_csv(filename,
                      header=True,
+                     index=False,
                      na_rep="0")
 
 #웹페이지 크롤링
