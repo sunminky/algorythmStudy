@@ -45,6 +45,7 @@ def parsing(html_source):
 def parsingLikeDislike(url):
     driver = wd.Chrome(executable_path="chromedriver.exe")
     driver.get(url)
+    time.sleep(1.5)
     html_source = driver.page_source
     bs = BeautifulSoup(html_source, "html.parser")
     info = bs.find_all("script")    #자바스크립트에 있는 값 긁었음
@@ -52,25 +53,26 @@ def parsingLikeDislike(url):
     for i in info:
         likeCount = 0
         dislikeCount = 0
-        regExpView = re.compile('좋아요 [0-9,]*개')
+        regExpView = re.compile('label\":\"좋아요 [0-9,]*개')
         ret = regExpView.search(str(i))  # 링크가져오기
         if ret:
-            likeCount = ret.group()[4:-1]   #"좋아요 12,123개"에서 숫자만 나오게
+            likeCount = ret.group()[12:-1]   #"좋아요 12,123개"에서 숫자만 나오게
             break
             
     for i in info:
-        regExpView = re.compile('싫어요 [0-9,]*개')
+        regExpView = re.compile('label\":\"싫어요 [0-9,]*개')
         ret = regExpView.search(str(i))  # 링크가져오기
         if ret:
-            dislikeCount = ret.group()[4:-1]    #"싫어요 12,123개"에서 숫자만 나오게
+            dislikeCount = ret.group()[12:-1]    #"싫어요 12,123개"에서 숫자만 나오게
             break
 
     driver.quit()
+    print(likeCount, dislikeCount)
     return likeCount, dislikeCount  #좋아요, 싫어요 개수 반환
 
 if __name__ == '__main__':
     driver = wd.Chrome(executable_path="chromedriver.exe")
-    subject = ["mozart", "bach"]
+    subject = ["mozart", "bach", "Chopin", "Beethoven", "Handel"]
 
     for artist in subject:
         url = "https://www.youtube.com/results?search_query=" + artist
