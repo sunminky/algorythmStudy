@@ -12,14 +12,14 @@ public class PortionAdd {
 
     private void solution(){
         Scanner scanner = new Scanner(System.in);
-        int indice = scanner.nextInt();
-        int tries = scanner.nextInt() + scanner.nextInt();
-        long[] elements = new long[indice+1];
-        tree =new long[indice+1];
+        int indice = scanner.nextInt(); //원소들의 개수
+        int tries = scanner.nextInt() + scanner.nextInt();  //조회횟수 + 수정횟수
+        long[] elements = new long[indice+1];   //원소들 저장
+        tree =new long[indice+1];   //펜윅트리
 
         /*트리 초기화*/
         for(int i=0;i<indice;i++){
-            long newValue = scanner.nextLong();
+            long newValue = scanner.nextLong(); 
             update(i+1, newValue);
             elements[i+1] = newValue;
         }
@@ -31,7 +31,7 @@ public class PortionAdd {
 
             switch (action) {
                 case 1: //숫자 바꾸기
-                    long margin = c - elements[b];
+                    long margin = c - elements[b];  //원래 값과 새 값의 차이
                     elements[b] = c;
                     update(b, margin);
                     break;
@@ -55,9 +55,9 @@ public class PortionAdd {
 
     private long sum(int idx){
         int grpBit = idx;
-        int ret = 0;
+        long ret = 0;
 
-        if(idx == tree.length-1)
+        if(idx == tree.length-1)    //조회하려는 범위가 전체합인 경우
             return tree[tree.length-1];
 
         while (grpBit > 0){
