@@ -10,13 +10,13 @@ def solution(begin, target, words):
     answer = 0
 
     while isLeft:
-        isLeft = False;
-        for i in range(len(neighbor)):
-            if depth[i] == cnt:
-                for j in range(len(neighbor[i])):
-                    if neighbor[i][j]:
-                        if depth[j] > depth[i]+1:
-                            depth[j] = depth[i]+1
+        isLeft = False
+        for seq, dep in enumerate(depth):
+            if dep == cnt:
+                for j in range(len(neighbor[seq])):
+                    if neighbor[seq][j]:
+                        if depth[j] > depth[seq]+1:
+                            depth[j] = depth[seq]+1
                 isLeft = True
         cnt += 1
 
