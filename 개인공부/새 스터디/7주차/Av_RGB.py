@@ -24,3 +24,13 @@ if __name__ == '__main__':
         estimate[i][2][1] = painting_cost[i][2] + s_list_prev[0][1] if s_list_prev[0][0] != 2 else painting_cost[i][2] + s_list_prev[1][1]
 
     print(min(estimate[-1], key=lambda x:x[1])[1])
+
+'''
+import sys
+painting_cost = [tuple(map(int, sys.stdin.readline().split())) for i in range(int(sys.stdin.readline()))]  #페인트 비용
+estimate = [tuple(zip([0, 1, 2], painting_cost[0]))] + [[[0, 0], [1, 0], [2, 0]] for _ in range(len(painting_cost) - 1)]  # 각 페인트를 선택했을 때 비용
+for i in range(1, len(estimate)):
+    s_list_prev = sorted(estimate[i-1], key=lambda x:x[1])
+    estimate[i] = zip([0,1,2],[painting_cost[i][j] + s_list_prev[0][1] if s_list_prev[0][0] != j else painting_cost[i][j] + s_list_prev[1][1] for j in [0, 1, 2]])
+print(min(estimate[-1], key=lambda x:x[1])[1])
+'''
