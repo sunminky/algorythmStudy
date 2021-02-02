@@ -4,9 +4,7 @@ import sys
 
 class node:
     def __init__(self):
-        self.super = -1 #선임
         self.under = [] #후임
-        self.under_cost = []    #후임들 전파시간
         self.time = -1   #최적의 전파시간
 
 def search(staff : node):   #하향식 접근법
@@ -16,13 +14,9 @@ def search(staff : node):   #하향식 접근법
         return staff.time
     else:
         #자기 부하들중 가장 전파시간이 오래걸리는 놈을 찾음
-        lst = []    #부하들의 전파시간을 저장
-        for u in staff.under:
-            lst.append(search(boss[u]))
+        lst = [search(boss[u]) for u in staff.under]    #부하들의 전파시간을 저장
         lst.sort(reverse=True)
-        for i in range(len(lst)):
-            lst[i] += i + 1
-        staff.time = max(lst)
+        staff.time = max([lst[x] + 1 + x for x in range(len(lst))])
         return staff.time
 
 if __name__ == '__main__':
@@ -33,7 +27,6 @@ if __name__ == '__main__':
 
     #트리 만들기
     for i in range(1, len(structure)):
-        boss[i].super = structure[i]
         boss[structure[i]].under.append(i)
 
     search(boss[0])
