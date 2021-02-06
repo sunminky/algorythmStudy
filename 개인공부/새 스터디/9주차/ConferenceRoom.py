@@ -13,7 +13,7 @@ if __name__ == '__main__':
     answer = 1
 
     for s_time, e_time in conference[1:]:
-        if s_time >= cur_e_time and s_time <= e_time:
+        if s_time >= cur_e_time:
             cur_e_time = e_time
             answer += 1
 
