@@ -11,7 +11,7 @@ def solution(orders, course):
     for c in course:
         for o in orders:
             if len(o) >= c:
-                for s in combinations(o, c):
+                for s in combinations(sorted(o), c):
                     if not dictionary[c].get("".join(s), False):
                         dictionary[c]["".join(s)] = 1
                     else:
@@ -27,8 +27,10 @@ def solution(orders, course):
                 answer.append(item)
 
     answer.sort()
+    print(answer)
     return answer
 
 if __name__ == '__main__':
     solution(["ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"], [2,3,4])
     solution(["ABCDE", "AB", "CD", "ADE", "XYZ", "XYZ", "ACD"], [2,3,5])
+    solution(["XYZ", "XWY", "WXA"], [2,3,4])
