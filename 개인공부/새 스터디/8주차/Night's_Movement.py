@@ -1,6 +1,9 @@
 #https://www.acmicpc.net/problem/7562
 import sys
-import heapq
+from queue import PriorityQueue
+
+def Levenshtein(current, target):
+    return abs(target[0] - current[0]) + abs(target[1] - current[1])
 
 if __name__ == '__main__':
     n_testcase = int(sys.stdin.readline())
@@ -9,57 +12,33 @@ if __name__ == '__main__':
         field_size = int(sys.stdin.readline())
         start_loc = tuple(map(int, sys.stdin.readline().split()))
         target_loc = tuple(map(int, sys.stdin.readline().split()))
-        field_count = [[1000000 for _ in range(field_size+1)] for _ in range(field_size+1)]
-        queue = []
+        field_count = [[sys.maxsize for _ in range(field_size)] for _ in range(field_size)]
+        visited = [[False for _ in range(field_size)] for _ in range(field_size)]
+        queue = PriorityQueue()
 
-        field_count[start_loc[0]][start_loc[1]] = 0
-        heapq.heappush(queue, (0, start_loc))
+        field_count[start_loc[1]][start_loc[0]] = 0
+        visited[start_loc[1]][start_loc[0]] = True
+        queue.put(((field_count[start_loc[1]][start_loc[0]], Levenshtein(start_loc, target_loc)), start_loc))
 
-        cur_loc = start_loc
+        while True:
+            cost_distance, current_loc = queue.get()
+            #print(current_loc, cost_distance)
 
-        while cur_loc != target_loc:
-            cost, cur_loc = heapq.heappop(queue)
-            
-            #나이트가 움직일 수 있는 좌표을 큐에 추가
-            if cur_loc[1] -2 >= 0 and cur_loc[0] - 1 >= 0:
-                if cost + 1 <= field_count[cur_loc[1] - 2][cur_loc[0] - 1]:  #범위 체크
-                    field_count[cur_loc[1] - 2][cur_loc[0] - 1] = cost + 1  #계산한 값이 더 작으면 갱신
-                    heapq.heappush(queue, (cost+1, (cur_loc[0] -1, cur_loc[1] -2)))  #큐에 추가
+            if cost_distance[1] == 0:
+                break
 
-            if cur_loc[1] -2 >= 0 and cur_loc[0] + 1 <= field_size:
-                if cost + 1 < field_count[cur_loc[1] - 2][cur_loc[0] + 1]:  #범위 체크
-                    field_count[cur_loc[1] - 2][cur_loc[0] + 1] = cost + 1  #계산한 값이 더 작으면 갱신
-                    heapq.heappush(queue, (cost+1, (cur_loc[0] +1, cur_loc[1] -2)))  #큐에 추가
+            ## 탐색 ##
+            direction = ((1, 2), (1, -2), (2, 1), (2, -1), (-1, 2), (-1, -2), (-2, 1), (-2, -1))
+            for item in direction:
+                x = current_loc[1] - item[0]
+                y = current_loc[0] - item[1]
+                if x < 0 or x >= field_size or y < 0 or y >= field_size or visited[y][x]:
+                    continue
+                visited[y][x] = True
+                field_count[y][x] = cost_distance[0] + 1
+                queue.put(((field_count[y][x],Levenshtein((x,y), target_loc)), (x, y)))
 
-            if cur_loc[1] -1 >= 0 and cur_loc[0] - 2 >= 0:
-                if cost + 1 < field_count[cur_loc[1] - 1][cur_loc[0] - 2]:  #범위 체크
-                    field_count[cur_loc[1] - 1][cur_loc[0] - 2] = cost + 1  #계산한 값이 더 작으면 갱신
-                    heapq.heappush(queue, (cost+1, (cur_loc[0] -2, cur_loc[1] -1)))  #큐에 추가
-
-            if cur_loc[1] +1 <= field_size and cur_loc[0] - 2 >= 0:
-                if cost + 1 < field_count[cur_loc[1] + 1][cur_loc[0] - 2]:  #범위 체크
-                    field_count[cur_loc[1] + 1][cur_loc[0] - 2] = cost + 1  #계산한 값이 더 작으면 갱신
-                    heapq.heappush(queue, (cost+1, (cur_loc[0] -2, cur_loc[1] + 1)))  #큐에 추가
-
-            if cur_loc[1] +2 <= field_size and cur_loc[0] - 1 >= 0:
-                if cost + 1 < field_count[cur_loc[1] + 2][cur_loc[0] - 1]:  #범위 체크
-                    field_count[cur_loc[1] + 2][cur_loc[0] - 1] = cost + 1  #계산한 값이 더 작으면 갱신
-                    heapq.heappush(queue, (cost+1, (cur_loc[0] -1, cur_loc[1] + 2)))  #큐에 추가
-
-            if cur_loc[1] +2 <= field_size and cur_loc[0] + 1 <= field_size:
-                if cost + 1 < field_count[cur_loc[1] + 2][cur_loc[0] + 1]:  #범위 체크
-                    field_count[cur_loc[1] + 2][cur_loc[0] + 1] = cost + 1  #계산한 값이 더 작으면 갱신
-                    heapq.heappush(queue, (cost+1, (cur_loc[0] +1, cur_loc[1] + 2)))  #큐에 추가
-
-            if cur_loc[1] +1 <= field_size and cur_loc[0] - 2 >= 0:
-                if cost + 1 < field_count[cur_loc[1] + 1][cur_loc[0] - 2]:  #범위 체크
-                    field_count[cur_loc[1] + 1][cur_loc[0] - 2] = cost + 1  #계산한 값이 더 작으면 갱신
-                    heapq.heappush(queue, (cost+1, (cur_loc[0] - 2, cur_loc[1] + 1)))  #큐에 추가
-
-            if cur_loc[1] +1 <= field_size and cur_loc[0] + 2 <= field_size:
-                if cost + 1 < field_count[cur_loc[1] + 1][cur_loc[0] + 2]:  #범위 체크
-                    field_count[cur_loc[1] + 1][cur_loc[0] + 2] = cost + 1  #계산한 값이 더 작으면 갱신
-                    heapq.heappush(queue, (cost+1, (cur_loc[0] + 2, cur_loc[1] + 1)))  #큐에 추가
-
-        print(field_count[target_loc[1]][target_loc[0]])
-        #print(field_count)
+        if field_count[target_loc[1]][target_loc[0]] == sys.maxsize:
+            print(0)
+        else:
+            print(field_count[target_loc[1]][target_loc[0]])
