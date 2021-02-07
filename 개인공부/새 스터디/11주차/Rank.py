@@ -1,6 +1,7 @@
 #https://programmers.co.kr/learn/courses/30/lessons/72412
 
 from bisect import bisect_left
+from itertools import product
 
 def solution(info, query):
     answer = [] #정답 저장
@@ -33,13 +34,10 @@ def solution(info, query):
         r_f = food[r_f]
         r_s = int(raw_query[-1])
 
-        for _r_l in r_l:
-            for _r_p in r_p:
-                for _r_c in r_c:
-                    for _r_f in r_f:
-                        #그룹별 리스트의 길이 - 요구하는 점수보다 높은 점수가 제일 처음 나오는 위치 = 요구하는 점수보다 높은 지원자들의 개수
-                        cnt += len(group[_r_l][_r_p][_r_c][_r_f]) - bisect_left(group[_r_l][_r_p][_r_c][_r_f], r_s)
-
+        #카티션 프로덕트
+        for p in product(r_l, r_p, r_c, r_f):
+            # 그룹별 리스트의 길이 - 요구하는 점수보다 높은 점수가 제일 처음 나오는 위치 = 요구하는 점수보다 높은 지원자들의 개수
+            cnt += len(group[p[0]][p[1]][p[2]][p[3]]) - bisect_left(group[p[0]][p[1]][p[2]][p[3]], r_s)
 
         answer.append(cnt)
 
