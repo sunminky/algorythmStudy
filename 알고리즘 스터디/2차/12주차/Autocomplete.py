@@ -1,46 +1,27 @@
 #https://programmers.co.kr/learn/courses/30/lessons/17685?language=python3
-import sys
 
 class Trie:
-    def __init__(self):
-        self.childNode = dict()
+    def __init__(self, depth=0):
+        self.depth = depth
+        self.superNodes = set() #부모 노드들 저장
+        self.childNode = dict() #자식 노드들 저장
 
-    def add(self, word):
-        if len(word) == 0:
-            self.childNode["end"] = True   #종료문자 추가
-            return
+    def addWord(self, word, endNode):
+        if word[0] == '@':  #단어의 끝인 경우
+            endNode.superNodes.add(self)
+        else:
+            if not self.childNode.get(word[0], False):  #자식이 없으면 새로 만들고 추가
+                self.childNode[word[0]] = Trie(depth=self.depth+1)
+            self.childNode[word[0]].superNodes.add(self)    #부모 노드 추가
+            self.childNode[word[0]].addWord(word[1:], endNode)  #자식 노드 추가
 
-        if not self.childNode.get(word[0], None):   #없으면 추가
-            self.childNode[word[0]] = Trie()
-
-        self.childNode[word[0]].add(word[1:])   #있으면 그 뒤 문자 추가
-
-
-    def refer(self, word, cnt):
-        if len(word) == 0:   #단어가 끝났다면 종료
-            if len(self.childNode) > 1: #단어를 전부써야만 구별되는 경우
-                return cnt, False
-            return cnt, True
-
-        #반환값 확인, 자식노드가 1보다 크면 바로 리턴
-        ret_val, flag = self.childNode[word[0]].refer(word[1:], cnt+1)
-        if flag and len(self.childNode) > 1: #자식노드가 1보다 큼, 구별되지 않는 경우 생기는 경우
-            flag = False
-            ret_val = cnt+1
-
-        return ret_val, flag
-
-def solution(words) :
-    sys.setrecursionlimit(1000001)  #스택깊이 제한 해제
+def solution(words):
     answer = 0
-    rootNode = Trie()
+    rootNode = Trie(depth=0)   #루트 노드
+    endNode = Trie(depth=-1)    #종료노드
 
-    #입력된 단어들 트라이에 저장하기
-    for element in words:
-        rootNode.add(element)
-
-    for element in words:
-        answer += rootNode.refer(element, 0)[0]
+    for _word in words:
+        rootNode.addWord(_word + '@', endNode)
 
     return answer
 
