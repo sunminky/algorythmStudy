@@ -1,43 +1,44 @@
 # https://programmers.co.kr/learn/courses/30/lessons/17685?language=python3
 
-class Trie:
-    def __init__(self, depth=0, end=False):
-        self.depth = depth
-        if end:
-            self.superNodes = []  # 부모 노드들 저장
-        else:
-            self.superNodes = None  # 부모 노드 저장
-        self.childNode = dict()  # 자식 노드들 저장
+class Trie():
+    def __init__(self):
+        self.childNodes = dict()
+        self.passingCnt = 0  #거쳐간 단어의 수
 
-    def addWord(self, word, endNode):
-        if word[0] == '@':  # 단어의 끝인 경우
-            self.childNode['@'] = endNode
-            endNode.superNodes.append(self)
-        else:
-            if not self.childNode.get(word[0], False):  # 자식이 없으면 새로 만들고 추가
-                self.childNode[word[0]] = Trie(depth=self.depth + 1)
-            self.childNode[word[0]].superNodes = self  # 부모 노드 추가
-            self.childNode[word[0]].addWord(word[1:], endNode)  # 자식 노드 추가
+    def search(self, word : str):
+        subTree = self
+        for i, char in enumerate(word):
+            #거쳐간 단어가 한개 일 때
+            if subTree.passingCnt == 1:
+                return i
+            else:
+                subTree = subTree.childNodes[char]  #다음 자식노드 탐색
+
+        return i + 1    #단어를 전부 다 쳐야하는 경우
+
+
+def makeTree(words : list) -> Trie:
+    rootNode = Trie()
+
+    for word in words:
+        subTree = rootNode
+        for i, char in enumerate(word):
+            subTree.passingCnt += 1
+            if not subTree.childNodes.get(char, False):
+                subTree.childNodes[char] = Trie()
+            subTree = subTree.childNodes[char]
+            if i == len(word) - 1:
+                subTree.passingCnt += 1
+
+    return rootNode
 
 
 def solution(words):
     answer = 0
-    rootNode = Trie(depth=0)  # 루트 노드
-    endNode = Trie(depth=-1, end=True)  # 종료노드
+    rootNode = makeTree(words)
 
     for _word in words:
-        rootNode.addWord(_word + '@', endNode)
-
-    for node in endNode.superNodes:
-        eNode = node
-        RightInFront = True
-        while eNode.superNodes is not None and not len(eNode.childNode) > 1:  # 갈림길이 아니거나 루트노드가 아닌 경우
-            eNode = eNode.superNodes
-            RightInFront = False
-
-        # print(f"[{eNode.depth}, {RightInFront}] {eNode.superNodes} {eNode.childNode}")
-
-        answer += eNode.depth + 1 - RightInFront
+        answer += rootNode.search(_word)
 
     return answer
 
