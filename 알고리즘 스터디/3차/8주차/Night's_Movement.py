@@ -2,8 +2,11 @@
 import sys
 from queue import PriorityQueue
 
-def Levenshtein(current, target):
-    return abs(target[0] - current[0]) + abs(target[1] - current[1])
+def clear_que(queue : PriorityQueue):
+    '''큐를 비워지는 역할을 함, PriorityQueue는 clear가 없어서 직접구현'''
+    while not queue.empty():
+        queue.get()
+
 
 if __name__ == '__main__':
     n_testcase = int(sys.stdin.readline())
@@ -12,33 +15,34 @@ if __name__ == '__main__':
         field_size = int(sys.stdin.readline())
         start_loc = tuple(map(int, sys.stdin.readline().split()))
         target_loc = tuple(map(int, sys.stdin.readline().split()))
-        field_count = [[sys.maxsize for _ in range(field_size)] for _ in range(field_size)]
-        visited = [[False for _ in range(field_size)] for _ in range(field_size)]
-        queue = PriorityQueue()
+        cost_map = [[1000 for _ in range(field_size)] for _ in range(field_size)]   #비용 저장
+        queue = PriorityQueue() #탐색할 위치 저장
+        movement = ((1, 2), (2, 1), (1, -2), (2, -1), (-1, 2), (-2, 1), (-1, -2), (-2, -1))
 
-        field_count[start_loc[1]][start_loc[0]] = 0
-        visited[start_loc[1]][start_loc[0]] = True
-        queue.put(((field_count[start_loc[1]][start_loc[0]], Levenshtein(start_loc, target_loc)), start_loc))
+        #계산량을 줄이기 위해 필요 없는 필드 버림
+        x_boundary = (max(min(start_loc[0]-2, target_loc[0]-2), 0), min(field_size-1, max(start_loc[0]+2, target_loc[0]+2)))
+        y_boundary = (max(min(start_loc[1]-2, target_loc[1]-2), 0), min(field_size-1, max(start_loc[1]+2, target_loc[1]+2)))
+        cost_map[start_loc[1]][start_loc[0]] = 0    #출발 위치까지 가는데 필요한 비용은 0
+        queue.put((cost_map[start_loc[1]][start_loc[0]], start_loc))    #큐에 출발지와 출발지 비용을 넣음
 
-        while True:
-            cost_distance, current_loc = queue.get()
-            #print(current_loc, cost_distance)
+        while not queue.empty():
+            cost, cur_loc = queue.get()
 
-            if cost_distance[1] == 0:
-                break
+            for _move in movement:
+                #바운더리 체크
+                x = cur_loc[0] + _move[0]
+                y = cur_loc[1] + _move[1]
 
-            ## 탐색 ##
-            direction = ((1, 2), (1, -2), (2, 1), (2, -1), (-1, 2), (-1, -2), (-2, 1), (-2, -1))
-            for item in direction:
-                x = current_loc[1] - item[0]
-                y = current_loc[0] - item[1]
-                if x < 0 or x >= field_size or y < 0 or y >= field_size or visited[y][x]:
-                    continue
-                visited[y][x] = True
-                field_count[y][x] = cost_distance[0] + 1
-                queue.put(((field_count[y][x],Levenshtein((x,y), target_loc)), (x, y)))
+                #x바운더리 만족
+                if x_boundary[0] <= x <= x_boundary[1]:
+                    #y바운더리 만족
+                    if y_boundary[0] <= y <= y_boundary[1]:
+                        #비용 최소값 갱신
+                        if cost_map[y][x] > cost + 1:
+                            cost_map[y][x] = cost + 1
+                            queue.put((cost_map[y][x], (x, y)))
+                            #타겟에 도착한 경우
+                            if (x, y) == target_loc:
+                                clear_que(queue)
 
-        if field_count[target_loc[1]][target_loc[0]] == sys.maxsize:
-            print(0)
-        else:
-            print(field_count[target_loc[1]][target_loc[0]])
+        print(cost_map[target_loc[1]][target_loc[0]])
