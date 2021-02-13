@@ -1,60 +1,34 @@
 # https://www.acmicpc.net/problem/1520
 
 import sys
-
-sys.setrecursionlimit(10000)
-
-
-def search(x, y):
-    global my_map
-    global height
-    global width
-    global stuck_map
-
-    ret = 0
-
-    if x == width - 1 and y == height - 1:
-        return 1
-
-    if num_ways[y][x]:
-        num_ways[y][x] += 1
-        return 1
-
-    # 위
-    if y > 0:
-        if not stuck_map[y-1][x] and my_map[y - 1][x] < my_map[y][x]:
-            ret += search(x, y - 1)
-    # 아래
-    if y < height - 1:
-        if not stuck_map[y+1][x] and my_map[y + 1][x] < my_map[y][x]:
-            ret += search(x, y + 1)
-    # 좌
-    if x > 0:
-        if not stuck_map[y][x-1] and my_map[y][x - 1] < my_map[y][x]:
-            ret += search(x - 1, y)
-    # 우
-    if x < width - 1:
-        if not stuck_map[y][x+1] and my_map[y][x + 1] < my_map[y][x]:
-            ret += search(x + 1, y)
-
-    num_ways[y][x] = ret
-
-    if not ret:
-        stuck_map[y][x] = True
-
-    return ret
-
+from collections import deque
 
 if __name__ == '__main__':
-    global my_map, height, width, num_ways, stuck_map
     height, width = tuple(map(int, sys.stdin.readline().rstrip().split()))  # 지도 높이, 지도 너비
     my_map = []
-    num_ways = [[0 for _ in range(width)] for _ in range(height)]
-    stuck_map = [[False for _ in range(width)] for _ in range(height)]
+    count_map = [[0 for _ in range(width)] for _ in range(height)]
+    movement = ((1, 0), (-1, 0), (0, 1), (0, -1))
+    queue = deque()
 
     for _ in range(height):
         my_map.append(list(map(int, sys.stdin.readline().rstrip().split())))
 
-    # 상 하 좌 우 탐색
-    search(0, 0)
-    print(num_ways[0][0])
+    #큐에 출발지 넣음
+    queue.append((0, 0))
+    count_map[0][0] = 1
+
+    while queue:
+        cur_loc = queue.popleft()
+
+        for _move in movement:
+            x = cur_loc[0] + _move[0]
+            y = cur_loc[1] + _move[1]
+
+            #바운더리 체크
+            if 0 <= x < width and 0 <= y < height:
+                #내리막인지 체크
+                if my_map[y][x] < my_map[cur_loc[1]][cur_loc[0]]:
+                    count_map[y][x] += 1
+                    queue.append((x, y))
+
+    print(count_map[-1][-1])
