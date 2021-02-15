@@ -33,6 +33,6 @@ def block(width, leftN, position):
     return accessable
 
 if __name__ == '__main__':
-    for i in range(1,13):
+    for i in range(1,16):
         result = solution(i)
         print(i," :",result)
