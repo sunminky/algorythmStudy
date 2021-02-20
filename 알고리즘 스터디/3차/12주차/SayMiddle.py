@@ -1,18 +1,26 @@
 #https://www.acmicpc.net/problem/1655
 
 import sys
-from bisect import bisect_left
+import heapq
 
 if __name__ == '__main__':
     n_numbers = int(sys.stdin.readline())
-    numbers = []
+    lower = []
+    upper = []
 
-    for stage in range(n_numbers):
-        data = int(sys.stdin.readline())
+    for _ in range(n_numbers):
+        num = int(sys.stdin.readline())
 
-        numbers.insert(bisect_left(numbers, data), data)
-
-        if stage % 2 == 0:
-            print(numbers[stage//2])
+        if len(lower) == len(upper):
+            heapq.heappush(lower, -num)
         else:
-            print(min(numbers[stage//2], numbers[stage//2+1]))
+            heapq.heappush(upper, num)
+
+        if upper and -lower[0] > upper[0]:
+            min_value = -heapq.heappop(lower)
+            max_value = heapq.heappop(upper)
+
+            heapq.heappush(lower, -max_value)
+            heapq.heappush(upper, min_value)
+
+        print(-lower[0])
