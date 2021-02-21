@@ -23,12 +23,13 @@ def isprime(n):
         s += 1
         t >>= 1
     #n보다 작은 양의 정수에 대해 밀러라빈 판별식 10번 수행
-    for i in range(10):
+    for i in range(1):
         b = random.randrange(2, n)
+        #밀러라핀 판별식 1번 수행할 때마다 틀릴 확률이 75% 감소
         if not mrtest(b):
             return False
     return True
 
 if __name__ == '__main__':
-    for i in range(2, 20):
-        print(i, isprime(i))
+    for e in [7919, 7907, 7901, 7883, 7879, 7877, 7873, 7867, 7853, 7841, 7829, 7823, 7817, 7793, 7789, 7759, 7757]:
+        print(isprime(e))
