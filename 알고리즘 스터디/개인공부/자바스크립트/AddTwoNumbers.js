@@ -5,7 +5,7 @@ function solution(numbers) {
 
     for(var i=0;i<numbers.length;i++){
         for(var j=i+1;j<numbers.length;j++){
-            answer.push(Number(numbers[i] + numbers[j]))
+            answer.push(numbers[i] + numbers[j])
         }
     }
 
