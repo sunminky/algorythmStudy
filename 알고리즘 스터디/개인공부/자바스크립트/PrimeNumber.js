@@ -43,5 +43,5 @@ function solution(numbers) {
     return answer;
 }
 
-solution("17")  //3
-//solution("011") //2
+//solution("17")  //3
+solution("011") //2
