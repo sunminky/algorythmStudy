@@ -6,13 +6,10 @@ function solution(s) {
     var pattern_head = new RegExp("[a-zA-Z]+")
 
     for(var i=0;i<trans.length;i++){
-        var match = trans[i].match(pattern_head)
-
-        if (match === null)
+        if (trans[i].match(pattern_head) === null)
             answer.push(trans[i])
-        else {
+        else
             answer.push(trans[i][0].toUpperCase() + trans[i].slice(1,))
-        }
     }
 
     return answer.join(" ");
