@@ -1,13 +1,14 @@
-arr = (31, -41, 59, 26, -53, 58, 97, -93, -23, 84)
-# arr = (-1,-2,-3,-4,-5)   #-15
-# arr = (1,2,3,4,5)   #15
+#arr = (31, -41, 59, 26, -53, 58, 97, -93, -23, 84)
+#arr = (-1,-2,-3,-4,-5)   #-15
+#arr = (1,2,3,4,5)   #15
+arr = (-10, 1, 0, 0, 0, 1, -10) #2
 
-def getMinIndex(arr):
-    min = arr[0]
+def getMinIndex(arr2):
+    min = arr2[0]
     index = 0;
-    for seq, value in enumerate(arr[1:]):
-        if arr[seq] < min:
-            min = arr[seq]
+    for seq, value in enumerate(arr2[1:]):
+        if arr2[seq] < min:
+            min = arr2[seq]
             index = seq
     return index
 
