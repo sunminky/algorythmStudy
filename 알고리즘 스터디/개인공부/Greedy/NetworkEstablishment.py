@@ -1,4 +1,5 @@
 #https://www.acmicpc.net/problem/1922
+#프림 알고리즘
 
 import sys
 from queue import PriorityQueue
