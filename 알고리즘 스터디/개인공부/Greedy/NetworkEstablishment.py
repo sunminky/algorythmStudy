@@ -10,6 +10,7 @@ if __name__ == '__main__':
     visited = [False for _ in range(n_computers + 1)]   #네트워크에 연결 됬는지 여부 저장
     queue = PriorityQueue()
     answer = 0  #네트워크 구축에 필요한 비용
+    finished_cnt = 0    #네트워크에 포함된 노드의 수 저장
 
     for _ in range(n_connection):
         src, dst, cost = tuple(map(int, sys.stdin.readline().split()))
@@ -28,6 +29,10 @@ if __name__ == '__main__':
         else:
             answer += c_cost
             visited[dst_node] = True
+            finished_cnt += 1
+            #모든 노드가 네트워크에 포함되면 종료
+            if finished_cnt == n_computers:
+                break
 
         #이웃 노드들과의 연결 큐에 넣음
         for n_dst, n_cost in path[dst_node]:
