@@ -1,4 +1,5 @@
 #https://programmers.co.kr/learn/courses/30/lessons/43238
+#https://www.acmicpc.net/problem/3079
 
 def solution(n, times):
     max_time = 1000000000 * n + 1   #최악의 시간인 경우
