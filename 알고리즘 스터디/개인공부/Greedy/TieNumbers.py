@@ -4,7 +4,6 @@ import sys
 
 if __name__ == '__main__':
     numbers = [[], []]  #음수, 양수
-    idx = 0
     answer = 0
     
     for _ in range(int(sys.stdin.readline())):
