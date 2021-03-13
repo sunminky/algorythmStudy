@@ -26,9 +26,6 @@ if __name__ == '__main__':
     N = int(sys.stdin.readline())
     field = [tuple(map(int, sys.stdin.readline().split())) for _ in range(N)]
 
-    divide(N // 2, 0, 0)
-    divide(N // 2, 0, N // 2)
-    divide(N // 2, N // 2, 0)
-    divide(N // 2, N // 2, N // 2)
+    divide(N, 0, 0)
 
     print(count[0], count[1], sep="\n")
