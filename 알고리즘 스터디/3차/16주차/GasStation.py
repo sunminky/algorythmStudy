@@ -12,9 +12,6 @@ if __name__ == '__main__':
 
     for seq, _cost in enumerate(map(int, reversed(sys.stdin.readline().split()[:-1]))):
         max_distance += distance[seq]   #도착지까지의 거리
-
-        if cost_dict.get(_cost, False) is False:
-            cost_dict[_cost] = max_distance
         cost_dict[_cost] = max_distance
 
     #기름 가격이 싼 순서대로 탐색
