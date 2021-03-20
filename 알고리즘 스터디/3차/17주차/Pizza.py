@@ -12,10 +12,7 @@ if __name__ == '__main__':
 
     min_val = oven[0]
     for i in range(len(oven)):
-        if oven[i] < min_val:
-            min_val = oven[i]
-        else:
-            oven[i] = min_val
+        oven[i] = min_val = min(oven[i], min_val)
 
     oven.reverse()
 
