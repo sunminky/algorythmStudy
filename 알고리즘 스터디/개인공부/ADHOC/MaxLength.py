@@ -4,26 +4,21 @@ import sys
 
 if __name__ == '__main__':
     n_num = int(sys.stdin.readline())
-    x = [0] * n_num
-    y = [0] * n_num
+    calc = [[[0, i] for i in range(n_num)], [[0, i] for i in range(n_num)]]     # [x+y, seq], [x-y, seq]
 
     for i in range(n_num):
-        x[i], y[i] = map(int, sys.stdin.readline().split())
+        x, y = map(int, sys.stdin.readline().split())
+        calc[0][i][0] = x + y
+        calc[1][i][0] = x - y
 
-    ground = [sum(x) / n_num, sum(y) / n_num]
-    max_point_val = 0
-    max_point = ground.copy()
+    answer = []
+    # -(x + y) + (x + y)
+    answer.append(-min(calc[0], key=lambda x: x[0])[0] + max(calc[0], key=lambda x: x[0])[0])
+    # -(x - y) + (x - y)
+    answer.append(-min(calc[1], key=lambda x: x[0])[0] + max(calc[1], key=lambda x: x[0])[0])
+    # (x - y) - (x - y)
+    answer.append(max(calc[1], key=lambda x: x[0])[0] - min(calc[1], key=lambda x: x[0])[0])
+    # (x + y) - (x + y)
+    answer.append(max(calc[0], key=lambda x: x[0])[0] - min(calc[0], key=lambda x: x[0])[0])
 
-    for i in range(n_num):
-        if max_point_val < abs(x[i] - ground[0]) + abs(y[i] - ground[1]):
-            max_point_val = abs(x[i] - ground[0]) + abs(y[i] - ground[1])
-            max_point = [x[i], y[i]]
-
-    max_point_val2 = 0
-    max_point2 = max_point.copy()
-    for i in range(n_num):
-        if max_point_val2 < abs(x[i] - max_point[0]) + abs(y[i] - max_point[1]):
-            max_point_val2 = abs(x[i] - max_point[0]) + abs(y[i] - max_point[1])
-            max_point2 = [x[i], y[i]]
-
-    print(max_point_val2)
+    print(max(answer))
