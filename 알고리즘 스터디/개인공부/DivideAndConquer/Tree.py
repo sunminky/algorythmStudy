@@ -8,7 +8,7 @@ if __name__ == '__main__':
         pre_ord = tuple(map(lambda x: int(x)-1, sys.stdin.readline().split()))
         in_ord = tuple(map(lambda x: int(x)-1, sys.stdin.readline().split()))
         pointer = [[-1, -1] for _ in range(N + 1)]    # [이전 노드, 다음 노드], 노드들 위치 + 기준점
-        visited = dict()    # 방문노드 저장
+        visited = [False] * N    # 방문노드 저장
 
         p_idx = 0   #전위순위 인덱스
         i_idx = 0   #중위순회 인덱스
@@ -26,7 +26,7 @@ if __name__ == '__main__':
             # 전위순회 값 == 중위순회 값, 맨 왼쪽 노드임
             if pre_ord[p_idx] == in_ord[i_idx]:
                 new_criteria = pointer[-1]
-                while visited.get(in_ord[i_idx], False):
+                while visited[in_ord[i_idx]]:
                     new_criteria = pointer[in_ord[i_idx]]
                     i_idx += 1
                     if i_idx == len(in_ord):
