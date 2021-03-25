@@ -17,7 +17,7 @@ def divide(x_start, x_end, y_start, y_end, direction):
             elif field[row][col] == 2:
                 jewerly.append((col, row))
 
-    # 보석1, 불순물0 이면 1반환 후 종료
+    # 보석1, 불순물0 이면 1반환 후 종료, 기저조건
     if len(jewerly) == 1 and len(impuriy) == 0:
         return 1
     else:
