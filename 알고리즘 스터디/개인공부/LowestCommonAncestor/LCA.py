@@ -29,7 +29,7 @@ def calc_layer(node_num, layer, parent, height):
             if nodes[n].layer == -1:
                 queue.append((n, c_layer + 1, c_node))
                 
-    #parent[i] == 2 **  번째 위에 있는 부모
+    #parent[i] == 2 ** i 번째 위에 있는 부모
     for i in range(1, height):
         for n in nodes:
             n.parent[i] = nodes[n.parent[i-1]].parent[i-1]  #2 ** 2 번째 부모의 2 ** 2번째 부모 == 자신의 2 ** 3 번째 부모
