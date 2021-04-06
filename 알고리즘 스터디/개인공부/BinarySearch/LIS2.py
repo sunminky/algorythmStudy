@@ -1,4 +1,5 @@
-#https://www.acmicpc.net/problem/12015
+# https://www.acmicpc.net/problem/12015
+# https://www.acmicpc.net/problem/12738
 #세그먼트 트리로도 구현 가능
 
 import sys
@@ -18,3 +19,4 @@ if __name__ == '__main__':
             lis[idx] = n
 
     print(len(lis))
+
