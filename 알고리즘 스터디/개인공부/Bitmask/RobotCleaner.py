@@ -54,7 +54,6 @@ if __name__ == '__main__':
 
         distance = [[0 for _ in range(len(stain))] for _ in range(len(stain))]  # 쓰레기들의 거리 저장
 
-        unreachable = False
         # 0(청소기) ~ 마지막 먼지 까지 거리 구하기
         for col, row in stain:
             visited = [[False for _ in range(width)] for _ in range(height)]
@@ -91,11 +90,10 @@ if __name__ == '__main__':
 
             # 도달할 수 없는 먼지가 있는 경우
             if stain_cnt != 0:
-                unreachable = True
                 break
 
         # 닿을 수 없는 먼지가 존재하지 않음
-        if not unreachable:
+        else:
             # 외판원 순회 실행
             answer = tsp(distance, stain, start)
 
