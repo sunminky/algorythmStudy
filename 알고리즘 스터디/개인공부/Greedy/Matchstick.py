@@ -67,5 +67,4 @@ def min_num(number):
 if __name__ == '__main__':
     for _ in range(int(sys.stdin.readline())):
         number = int(sys.stdin.readline())
-
         print(" ".join([min_num(number), max_num(number)]))
