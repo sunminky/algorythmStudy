@@ -10,7 +10,7 @@ if __name__ == '__main__':
     answer = 0
 
     # 첫 번째 행과 첫 번째 열에 1이 있는 경우 최소 넓이는 1
-    answer = 1 if field[0].count('1') else 0
+    answer = 1 if '1' in field[0] else 0
     if answer == 0:
         for row in range(height):
             if field[row][0] == '1':
