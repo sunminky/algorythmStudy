@@ -1,3 +1,4 @@
+# https://www.acmicpc.net/problem/13537
 # https://www.acmicpc.net/problem/13544
 # 머지소트트리, 세그먼트 트리로도 해보기
 
@@ -72,18 +73,13 @@ if __name__ == '__main__':
     n_query = int(sys.stdin.readline())
     tree = infalte_tree(nodes)
     tree_len = 1 << ceil(log2(len(nodes)))
-    answer = 0
 
     for _ in range(n_query):
         # 문제 조건에 맞게 인덱스 변경
-        i, j, k = map(int, sys.stdin.readline().split())
-        src = answer ^ i
-        dst = answer ^ j
-        target = answer ^ k
+        src, dst, target = map(int, sys.stdin.readline().split())
         cnt = 0
 
         for portion in search(tree, tree_len, src, dst):
             cnt += len(portion) - bisect_right(portion, target)
 
-        answer = cnt
-        print(answer)
+        print(cnt)
