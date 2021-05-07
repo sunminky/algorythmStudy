@@ -31,8 +31,6 @@ def solution(lines):
                 heapq.heappop(queue)
             else:
                 break
-        else:
-            time_slice = src
 
         heapq.heappush(queue, src)
         answer = max(answer, len(queue))
