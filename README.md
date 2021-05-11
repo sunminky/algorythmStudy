@@ -1,5 +1,5 @@
 # 알고리즘 스터디
 
-## ↓↓↓알고리즘 스터디 계획표↓↓↓
+## ↓↓↓알고리즘 스터디↓↓↓
 
-https://docs.google.com/spreadsheets/d/1UWbNOqNsLpO3Z2J5zFD74ZwmO3xdCadSnbCD2HigpdU/edit
+https://www.notion.so/a2ee8e91d526423f932e59e4ab8deac0
