@@ -1,32 +1,35 @@
-#https://programmers.co.kr/learn/courses/30/lessons/42883
+# https://programmers.co.kr/learn/courses/30/lessons/42883
+from collections import deque
+
 
 def solution(number, k):
-    lstNumber = list(number)
-    targetLen = len(number) - k
-    answer = lstNumber[:targetLen]
-    count = k
+    queue = deque()
 
-    for i in number[targetLen:]:
-        for j in range(targetLen - 1):
-            if answer[j] < answer[j+1]:
-                del answer[j]
-                answer.append(i)  # 뒤에있는 숫자 추가
-                count = count - 1
-                if count == 0:  #빼야할 갯수만큼 다 뺌
-                    return "".join(answer)
-                break
+    for num in number:
+        # 현재 숫자가 크다면 앞자리를 차지하도록 해야함
+        while queue and queue[-1] < num and k != 0:
+            queue.pop()
+            k -= 1
 
-        if answer[-1] < i:  #answer 맨뒤랑 현재 추가되는 숫자 비교
-            answer[-1] = i  #뒤에있는 숫자 추가
+        queue.append(num)
 
-    return "".join(answer)
+    # 숫자를 k번 못뺀 경우 빼주기
+    while queue and k != 0:
+        queue.pop()
+        k -= 1
+
+    return "".join(queue)
+
 
 if __name__ == '__main__':
-    result = solution("1924",2)
+    result = solution("1924", 2)
     print(result)
 
     result = solution("1231234", 3)
     print(result)
 
     result = solution("4177252841", 4)
+    print(result)
+
+    result = solution("989", 2)
     print(result)
