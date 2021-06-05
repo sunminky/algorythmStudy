@@ -12,11 +12,7 @@ def area(bar):
         # 스택의 가장 마지막 요소가 현재 요소보다 클 때
         while stack and bar[stack[-1]] > bar[seq]:
             height = bar[stack.pop()]
-            width = seq
-
-            if stack:
-                width -= stack[-1] + 1
-
+            width = seq - stack[-1] - 1 if stack else seq
             max_area = max(max_area, height * width)
 
         stack.append(seq)
@@ -24,11 +20,7 @@ def area(bar):
     # 스택에 요소가 남은 경우
     while stack:
         height = bar[stack.pop()]
-        width = len(bar)
-
-        if stack:
-            width -= stack[-1] + 1
-
+        width = len(bar) - stack[-1] - 1 if stack else len(bar)
         max_area = max(max_area, height * width)
 
     return max_area
@@ -37,19 +29,20 @@ def area(bar):
 if __name__ == '__main__':
     while True:
         height, width = map(int, sys.stdin.readline().split())
-        stack = [0] * height
+        stack = [0] * width
         answer = 0  # 최대 직사각형 넓이
 
-        if (height | width) == 0:
+        # height 와 width가 모두 0인 경우
+        if not (height | width):
             break
-
-        field = [tuple(map(int, sys.stdin.readline().split())) for _ in range(height)]
-
-        for col in range(width):
+        
+        for _ in range(height):
+            field = tuple(map(int, sys.stdin.readline().split()))
+            
             # 스택에 넣기
-            for row in range(height):
-                stack[row] = stack[row] * field[row][col] + field[row][col]
-                
+            for i in range(width):
+                stack[i] = stack[i] * field[i] + field[i]
+
             # 스택에서 가장 큰 직사각형 구하기
             answer = max(answer, area(stack))
 
