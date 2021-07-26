@@ -11,10 +11,6 @@ class node:
         self.parent = [0] * MAX_HEIGHT  # i번째 노드 : 2**i 번째 부모
         self.minmax = [[1000000, 1] for _ in range(MAX_HEIGHT)]  # i번째 노드 : 2**i 번째 부모까지의 최소값, 최대값
 
-    # 디버깅용
-    def __repr__(self):
-        return f"layer : {self.layer}, neighbor : {self.neighbor}, parents : {self.parent}, mimax : {self.minmax}"
-
 
 def calc_layer():
     queue = deque()
