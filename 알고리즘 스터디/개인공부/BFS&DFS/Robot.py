@@ -9,8 +9,8 @@ if __name__ == '__main__':
     robot_pos = tuple(map(int, sys.stdin.readline().split()))   # 로봇의 x좌표, y좌표, 방향
     target_pos = tuple(map(int, sys.stdin.readline().split()))  # 목적지의 x좌표, y좌표, 방향
     queue = deque()     # BFS에서 사용하는 큐
-    dir_convert = [1, 3, 2, 0]  # 동서남북 -> 북서남북 으로 변환
-    movement = ((0, -1), (1, 0), (0, 1), (-1, 0))  # 방향(북서남북)별 단위벡터
+    dir_convert = [1, 3, 2, 0]  # 동서남북 -> 북동남서 으로 변환
+    movement = ((0, -1), (1, 0), (0, 1), (-1, 0))  # 방향(북동남서)별 단위벡터
 
     queue.append((robot_pos[1] - 1, robot_pos[0] - 1, dir_convert[robot_pos[2] - 1], 0))    # 좌표x, 좌표y, 방향, 비용
     cost[robot_pos[0] - 1][robot_pos[1] - 1][dir_convert[robot_pos[2] - 1]] = 0     # 맨 처음 상태는 0의 비용으로 변화 가능
@@ -24,7 +24,6 @@ if __name__ == '__main__':
                 cost[c_y][c_x][(c_dir - 1 + 4) % 4] = c_cost + 1
                 queue.append((c_x, c_y, (c_dir - 1 + 4) % 4, c_cost + 1))
 
-        if field[c_y][c_x] != 1:    # 필드가 벽이 아닌 경우
             if cost[c_y][c_x][(c_dir + 1) % 4] > c_cost + 1:    # 오른쪽으로 회전
                 cost[c_y][c_x][(c_dir + 1) % 4] = c_cost + 1
                 queue.append((c_x, c_y, (c_dir + 1) % 4, c_cost + 1))
