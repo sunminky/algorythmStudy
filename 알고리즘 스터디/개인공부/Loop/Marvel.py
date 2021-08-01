@@ -4,7 +4,7 @@ import sys
 if __name__ == '__main__':
     n_marvel = int(sys.stdin.readline())
     positions = [set(map(int, sys.stdin.readline().split())) for _ in range(n_marvel + 1)]
-    positions[0] = sorted(positions[0]) # 출발지의 위치를 오름차순으로 정렬
+    positions[0] = sorted(positions[0])     # 출발지의 위치를 오름차순으로 정렬
     speed = set()   # 가능한 속도 저장
     answer = [0] * n_marvel
 
@@ -30,5 +30,4 @@ if __name__ == '__main__':
                 answer[seq] = velocity
                 break
 
-    for i in range(n_marvel):
-        print(positions[0][i], answer[i])
+    [print(positions[0][i], answer[i]) for i in range(n_marvel)]
