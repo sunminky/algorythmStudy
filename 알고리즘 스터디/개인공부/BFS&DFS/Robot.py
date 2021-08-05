@@ -1,4 +1,5 @@
 # http://jungol.co.kr/bbs/board.php?bo_table=pbank&wr_id=285&sca=99&sfl=wr_subject&stx=%EB%A1%9C%EB%B4%87
+# https://www.acmicpc.net/problem/1726
 import sys
 from collections import deque
 
