@@ -1,40 +1,37 @@
 # https://www.acmicpc.net/problem/10217
-# 메모리초과..
-
 import sys
-from queue import PriorityQueue
 
 if __name__ == '__main__':
-    n_testcase = int(sys.stdin.readline())
+    for _ in range(int(sys.stdin.readline())):
+        n_airport, budget, n_ticket = map(int, sys.stdin.readline().split())
+        edges = [list() for _ in range(n_airport)]
+        cost = [[1000001] * (budget + 1) for _ in range(n_airport)]  # cost[a][b] a번 노드에 b 비용으로 갈 수 있는 최소거리
+        answer = 1000001
 
-    for _ in range(n_testcase):
-        n_airport, support, ticket = tuple(map(int, sys.stdin.readline().split()))
-        path = [[] for _ in range(n_airport)]  # 경로 저장
-        cost_table = [[10000001 for _ in range(support+1)] for _ in range(n_airport)] #cost_table[노드][비용] = 시간
+        for _ in range(n_ticket):
+            u, v, c, d = map(int, sys.stdin.readline().split())
+            edges[u - 1].append([v - 1, c, d])
 
-        for _ in range(ticket):
-            src, dst, cost, time = tuple(map(int, sys.stdin.readline().split()))
-            path[src - 1].append((dst - 1, cost, time))
+        cost[0][0] = 0  # 0번에서 비용 0 -> 시간 0
 
-        queue = PriorityQueue()
-        cost_table[0][0] = 0
-        queue.put((0, 0, 0))    #시간, 비용, 노드
+        for cur_budget in range(budget + 1):
+            for node in range(n_airport):
+                cur_time = cost[node][cur_budget]
+                
+                # 시간이 초과된 경우
+                if cur_time == 1000001:
+                    continue
+                
+                # 최소 도착시간 갱신
+                if node == n_airport - 1:
+                    answer = min(cur_time, answer)
 
-        while not queue.empty():
-            c_time, c_cost, c_node = queue.get()
+                for v, c, d in edges[node]:
+                    if cur_budget + c > budget or answer < cur_time + d:
+                        continue
+                    cost[v][cur_budget + c] = min(cost[v][cur_budget + c], cur_time + d)
 
-            if n_dst == n_airport - 1:
-                break
-
-            #이웃들 조사
-            for n_dst, n_cost, n_time in path[c_node]:
-                if c_cost + n_cost <= support:
-                    if cost_table[n_dst][c_cost+n_cost] > c_time+n_time:
-                        cost_table[n_dst][c_cost + n_cost] = c_time + n_time
-                        queue.put((c_time + n_time, c_cost + n_cost, n_dst))
-
-        answer = min(cost_table[-1])
-        if answer != 10000001:
-            print(min(cost_table[-1]))
-        else:
+        if answer == 1000001:
             print("Poor KCM")
+        else:
+            print(answer)
