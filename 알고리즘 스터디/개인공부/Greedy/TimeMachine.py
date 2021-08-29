@@ -6,6 +6,7 @@ if __name__ == '__main__':
     n_node, n_edge = map(int, sys.stdin.readline().split())
     cost = [5000001] * n_node
     edge = [dict() for _ in range(n_node)]
+
     inf_loop = False
 
     for _ in range(n_edge):
