@@ -1,4 +1,4 @@
-#https://www.acmicpc.net/problem/1744
+# https://www.acmicpc.net/problem/1744
 
 import sys
 
