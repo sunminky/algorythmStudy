@@ -1,39 +1,30 @@
 # https://programmers.co.kr/learn/courses/30/lessons/17676
-
-
 import heapq
 
 
-def timeTosec(time):
-    time_h, time_m, time_s = map(float, time.split(':'))
-
-    return 3600 * time_h + 60 * time_m + time_s
-
-
-def sort_criteria(log):
-    _, src, cost = log.split()
-    return timeTosec(src) - float(cost[:-1]) + 0.001
-
-
 def solution(lines):
-    queue = []
     answer = 0
+    offer = []
+    time_slice = []
 
-    for log in sorted(lines, key=sort_criteria):
-        _, src, cost = log.split()
-        src = timeTosec(src)
+    for e in lines:
+        _, end_time, cost = e.split()
+        e_times = tuple(map(float, end_time.split(':')))
+        end_time = e_times[0] * 3600 + e_times[1] * 60 + e_times[2]
+        start_time = end_time - float(cost[:-1]) + 0.001
+        heapq.heappush(offer, (start_time, end_time))
 
-        # 현재 측정시간을 범위를 벗어나는 경우 제거
-        while queue:
-            time_slice = queue[0]
+    while offer:
+        start_time, end_time = heapq.heappop(offer)
 
-            if time_slice + 1 <= src - float(cost[:-1]) + 0.001:
-                heapq.heappop(queue)
-            else:
-                break
+        # 현재 로그와 1초이상 차이나는 경우
+        while time_slice:
+            if time_slice[0] + 1 <= start_time:
+                heapq.heappop(time_slice)
+            break
 
-        heapq.heappush(queue, src)
-        answer = max(answer, len(queue))
+        heapq.heappush(time_slice, end_time)
+        answer = max(answer, len(time_slice))
 
     return answer
 
