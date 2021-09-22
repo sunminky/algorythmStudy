@@ -1,49 +1,58 @@
 # https://programmers.co.kr/learn/courses/30/lessons/17685?language=python3
-
-class Trie():
-    def __init__(self):
-        self.childNodes = dict()
-        self.passingCnt = 0  #거쳐간 단어의 수
-
-    def search(self, word : str):
-        subTree = self
-        for i, char in enumerate(word):
-            #거쳐간 단어가 한개 일 때
-            if subTree.passingCnt == 1:
-                return i
-            else:
-                subTree = subTree.childNodes[char]  #다음 자식노드 탐색
-
-        return i + 1    #단어를 전부 다 쳐야하는 경우
+import sys
+sys.setrecursionlimit(1000001)
 
 
-def makeTree(words : list) -> Trie:
-    rootNode = Trie()
+class Trie:
+    def __init__(self, char='', root=False):
+        self.char = char
+        self.root = root
+        self.passing = 0
+        self.end = False
+        self.child = dict()
 
-    for word in words:
-        subTree = rootNode
-        for i, char in enumerate(word):
-            subTree.passingCnt += 1
-            if not subTree.childNodes.get(char, False):
-                subTree.childNodes[char] = Trie()
-            subTree = subTree.childNodes[char]
-            if i == len(word) - 1:
-                subTree.passingCnt += 1
+    def add_node(self, new_node, idx):
+        self.passing += 1
 
-    return rootNode
+        if len(new_node) == idx:
+            self.end = True
+            return
+
+        if new_node[idx] not in self.child:
+            self.child[new_node[idx]] = Trie(char=new_node[idx], root=False)
+
+        self.child[new_node[idx]].add_node(new_node, idx + 1)
+
+    def search(self, depth: int):
+        result = 0
+
+        if self.passing == 1 and not self.root:
+            return depth
+
+        if self.end:
+            result += depth
+
+        for _child in self.child.keys():
+            result += self.child[_child].search(depth+1)
+
+        return result
 
 
 def solution(words):
-    answer = 0
-    rootNode = makeTree(words)
+    root_node = Trie(root=True)
 
-    for _word in words:
-        answer += rootNode.search(_word)
+    for word in words:
+        root_node.add_node(word, 0)
+        
+    # 탐색
 
-    return answer
+    return root_node.search(0)
 
 
 if __name__ == '__main__':
+    result = solution(["go", "gone"])  # 5
+    print(result)
+
     result = solution(["go", "gone", "guild"])  # 7
     print(result)
 
