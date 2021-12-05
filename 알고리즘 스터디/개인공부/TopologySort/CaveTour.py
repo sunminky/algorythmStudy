@@ -49,6 +49,9 @@ def solution(n_node, path, order):
                 continue
 
             inbound[_neigh] -= 1
+
+            if inbound[_neigh]:
+                continue
             
             # 주변에 방문했던 노드가 있는 경우
             if nearby[_neigh]:
