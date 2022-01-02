@@ -13,15 +13,12 @@ def solution(scoville, K):
         s1, s2 = heapq.heappop(queue), heapq.heappop(queue)
 
         if s1 >= K:
-            break
-
-        if s1 == 0 and s2 == 0:
-            return -1
+            return answer
 
         heapq.heappush(queue, s1 + s2 * 2)
         answer += 1
 
-    if queue and heapq.heappop(queue) < K:
+    if heapq.heappop(queue) < K:
         return -1
 
     return answer
