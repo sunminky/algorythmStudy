@@ -12,18 +12,18 @@ class Node:
         self.end = 0
 
     def set_range(self, parent_start, nodes):
-        max_parent_end = parent_start + 1
+        max_child_end = parent_start + 1
 
         for _neigh in self.neigh:
             # 내 자식이 아닌 경우 패스
             if nodes[_neigh].layer != self.layer + 1:
                 continue
-            max_parent_end = max(max_parent_end, nodes[_neigh].set_range(max_parent_end, nodes))
+            max_child_end = max(max_child_end, nodes[_neigh].set_range(max_child_end, nodes))
 
         self.start = parent_start + 1
-        self.end = max_parent_end + 1
+        self.end = max_child_end + 1
 
-        return max_parent_end + 1
+        return max_child_end + 1
 
 
 if __name__ == '__main__':
