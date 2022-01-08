@@ -43,7 +43,6 @@ def solution(operations):
 
         if _data[1]:
             answer[0] = _data[0]
-            _data[1] = False
             break
 
     while not minQueue.empty():
