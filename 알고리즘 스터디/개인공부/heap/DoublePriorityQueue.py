@@ -3,7 +3,7 @@ from queue import PriorityQueue
 
 
 def solution(operations):
-    seq = 0
+    answer = [0, 0]
     maxQueue = PriorityQueue()
     minQueue = PriorityQueue()
 
@@ -15,7 +15,6 @@ def solution(operations):
             element = [parm, True]
             maxQueue.put((-parm, element))  # 힙은 기본적으로 최소힙을 구현
             minQueue.put((parm, element))
-            seq += 1
 
         elif opcode == "D":
             if parm == 1:
@@ -39,21 +38,22 @@ def solution(operations):
                     break
 
     # 정답배열 만들기
-    maxValue = None
-    minValue = None
     while not maxQueue.empty():
         _, _data = maxQueue.get()
 
         if _data[1]:
-            if maxValue is None:
-                maxValue = _data[0]
-            if minValue is None:
-                minValue = _data[0]
+            answer[0] = _data[0]
+            _data[1] = False
+            break
 
-            maxValue = max(maxValue, _data[0])
-            minValue = min(minValue, _data[0])
+    while not minQueue.empty():
+        _, _data = minQueue.get()
 
-    return [0 if maxValue is None else maxValue, 0 if minValue is None else minValue]
+        if _data[1]:
+            answer[1] = _data[0]
+            break
+
+    return answer
 
 
 if __name__ == '__main__':
