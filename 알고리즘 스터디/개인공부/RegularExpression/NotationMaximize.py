@@ -12,9 +12,6 @@ def run(nums, expressions, prior):
         queue.append(nums[1 + i])
 
     for _prior in prior:
-        if len(queue) == 1:
-            break
-
         new_queue = deque([queue.popleft()])
 
         while queue:
