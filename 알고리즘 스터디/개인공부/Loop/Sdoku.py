@@ -1,3 +1,4 @@
+# https://www.acmicpc.net/problem/2580
 import sys
 
 board = [list(map(int, sys.stdin.readline().split())) for _ in range(9)]
