@@ -1,35 +1,34 @@
-#https://www.acmicpc.net/problem/9252
-#레벤슈타인 거리
-
+# https://www.acmicpc.net/problem/9252
 import sys
 
 if __name__ == '__main__':
-    text = [sys.stdin.readline().rstrip() for _ in range(2)]
-    cost = [0 for _ in range(len(text[0]))]
-    common_string = [[] for _ in range(len(text[0]))]
+    text1 = sys.stdin.readline().rstrip()
+    text2 = sys.stdin.readline().rstrip()
+    cost = [[0] * len(text1) for _ in range(len(text2))]
+    dp = [["" for _ in range(len(text1))] for _ in range(len(text2))]
+    answer_pos = [0, 0]
 
-    for i in range(len(text[1])):
-        prev_cost = cost.copy()
-        prev_cs = common_string.copy()
+    for row in range(len(text2)):
+        for col in range(len(text1)):
+            if text2[row] == text1[col]:
+                if row - 1 >= 0 and col - 1 >= 0:
+                    cost[row][col] += cost[row - 1][col - 1]
+                    dp[row][col] = dp[row - 1][col - 1]
 
-        if text[0][0] == text[1][i]:
-            cost[0] = 1
-            common_string[0] = [text[1][i]]
-        else:
-            cost[0] = prev_cost[0]
-            common_string[0] = prev_cs[0]
+                cost[row][col] += 1
+                dp[row][col] += str(text2[row])
 
-        for j in range(1, len(cost)):
-            if text[1][i] == text[0][j]:
-                cost[j] = prev_cost[j-1] + 1
-                common_string[j] = prev_cs[j-1] + [text[1][i]]
+                if cost[row][col] > cost[answer_pos[1]][answer_pos[0]]:
+                    answer_pos[0] = col
+                    answer_pos[1] = row
             else:
-                if prev_cost[j] > cost[j-1]:
-                    cost[j] = prev_cost[j]
-                    common_string[j] = prev_cs[j]
-                else:
-                    cost[j] = cost[j-1]
-                    common_string[j] = common_string[j-1]
+                if cost[row - 1][col] > cost[row][col]:
+                    cost[row][col] = cost[row - 1][col]
+                    dp[row][col] = dp[row - 1][col]
 
-    print(cost[-1])
-    print("".join(common_string[-1]))
+                if cost[row][col - 1] > cost[row][col]:
+                    cost[row][col] = cost[row][col - 1]
+                    dp[row][col] = dp[row][col - 1]
+
+    print(cost[answer_pos[1]][answer_pos[0]])
+    print(dp[answer_pos[1]][answer_pos[0]])
