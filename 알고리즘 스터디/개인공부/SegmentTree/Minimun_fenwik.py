@@ -1,53 +1,52 @@
 # https://www.acmicpc.net/problem/10868
-
 import sys
 
-INF = 1000000000
 n_number, n_query = map(int, sys.stdin.readline().split())
-number = [int(sys.stdin.readline()) for _ in range(n_number)]
-tree1 = [INF] * (n_number + 1)
-tree2 = [INF] * (n_number + 1)
+nums = [int(sys.stdin.readline()) for _ in range(n_number)]
 
 
-def update1(tree, nth_node, value):
-    while nth_node <= n_number:
-        tree[nth_node] = min(tree[nth_node], value)
-        nth_node += nth_node & -nth_node
+def forward_update(tree, nthnode, value):
+    while nthnode <= n_number:
+        tree[nthnode] = min(tree[nthnode], value)
+        nthnode += nthnode & -nthnode
 
 
-def update2(tree, nth_node, value):
-    while nth_node > 0:
-        tree[nth_node] = min(tree[nth_node], value)
-        nth_node -= nth_node & -nth_node
+def backward_update(tree, nthnode, value):
+    while nthnode:
+        tree[nthnode] = min(tree[nthnode], value)
+        nthnode -= nthnode & -nthnode
 
 
-def query(tree1, tree2, numbers, start, end):
-    result = INF
+def query(forward_tree, backward_tree, start, end):
+    result = 1000000000
 
-    prev = start
-    cur = prev + (prev & -prev)
-    while cur <= end:
-        result = min(result, tree2[prev])
-        prev = cur
-        cur += (cur & -cur)
-
-    result = min(result, numbers[prev - 1])
-
+    cur = end - (end & -end)
     prev = end
-    cur = prev - (prev & -prev)
-    while cur >= start:
-        result = min(result, tree1[prev])
-        prev = cur
-        cur -= (cur & -cur)
 
-    return result
+    while cur >= start:
+        result = min(result, forward_tree[prev])
+        prev = cur
+        cur -= cur & -cur
+
+    cur = start + (start & -start)
+    prev = start
+
+    while cur <= end:
+        result = min(result, backward_tree[prev])
+        prev = cur
+        cur += cur & -cur
+
+    return min(result, nums[prev - 1])
 
 
 if __name__ == '__main__':
-    for seq, num in enumerate(number):
-        update1(tree1, seq + 1, num)
-        update2(tree2, seq + 1, num)
+    forward_tree = [1000000000] * (n_number + 1)
+    backward_tree = [1000000000] * (n_number + 1)
+
+    for seq, number in enumerate(nums):
+        forward_update(forward_tree, seq + 1, number)
+        backward_update(backward_tree, seq + 1, number)
 
     for _ in range(n_query):
-        src, dst = map(int, sys.stdin.readline().split())
-        print(query(tree1, tree2, number, src, dst))
+        start, end = map(int, sys.stdin.readline().split())
+        print(query(forward_tree, backward_tree, start, end))
