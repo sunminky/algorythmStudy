@@ -1,51 +1,48 @@
-#https://www.acmicpc.net/problem/10868
+# https://www.acmicpc.net/problem/10868
 
 import sys
 from math import ceil, log2
 
 
-# 최소값 세그먼트 트리
-def inflateTree(numbers):
-    global tree
+def inflate_tree(n_number, nums):
+    height = ceil(log2(n_number))
+    tree = [1000000000] * (2 << height)
+    end_layer = 1 << height
 
-    height = ceil(log2(len(numbers)))
-    tree = [1000000001 for _ in range(2 << height)]
-    end_node = 1 << height
+    for i in range(n_number):
+        tree[end_layer + i] = nums[i]
 
-    for i in range(len(number)):
-        tree[end_node + i] = number[i]
+    end_layer >>= 1
+    while end_layer:
+        for i in range(end_layer):
+            tree[end_layer + i] = min(tree[(end_layer + i) * 2], tree[(end_layer + i) * 2 + 1])
 
-    end_node >>= 1
-    while end_node != 0:
-        for i in range(end_node):
-            tree[end_node + i] = min(tree[(end_node + i) << 1], tree[((end_node + i) << 1) + 1])
-        end_node >>= 1
+        end_layer >>= 1
 
-    return 1 << height
+    return tree
 
 
-def search(portion_start, portion_end, nth_node, node_start, node_end): #원하는 구간 시작점, 끝점, 현재 노드 번호, 구간에 포함되는 노드 시작점, 끝점
-    global tree
+def query(tree, query_start, query_end, nth_node, portion_start, portion_end):
+    # 구간을 벗어나는 경우
+    if query_start > portion_end or query_end < portion_start:
+        return 1000000000
 
-    #구간에 속하지 않는 경우
-    if portion_start > node_end or portion_end < node_start:
-        return 1000000001
-    #구간에 속하는 경우
-    if portion_start <= node_start and node_end <= portion_end:
+    # 구간에 속하는 경우
+    if query_start <= portion_start and portion_end <= query_end:
         return tree[nth_node]
-    #구간의 경계에 걸치는 경우
-    middle = (node_start + node_end) // 2
-    return min(
-        search(portion_start, portion_end, nth_node * 2, node_start, middle),
-        search(portion_start, portion_end, nth_node * 2 + 1, middle + 1, node_end))
+
+    # 구간에 걸치는 경우
+    middle = (portion_start + portion_end) // 2
+    return min(query(tree, query_start, query_end, nth_node * 2, portion_start, middle),
+               query(tree, query_start, query_end, nth_node * 2 + 1, middle + 1, portion_end))
 
 
 if __name__ == '__main__':
     n_number, n_query = map(int, sys.stdin.readline().split())
-    number = [int(sys.stdin.readline()) for _ in range(n_number)]
-
-    end_width = inflateTree(number)
+    nums = [int(sys.stdin.readline()) for _ in range(n_number)]
+    tree = inflate_tree(n_number, nums)
+    end_layer = 1 << ceil(log2(n_number))
 
     for _ in range(n_query):
-        src, dst = map(int, sys.stdin.readline().split())
-        print(search(src, dst, 1, 1, end_width))
+        start, end = map(int, sys.stdin.readline().split())
+        print(query(tree, start, end, 1, 1, end_layer))
