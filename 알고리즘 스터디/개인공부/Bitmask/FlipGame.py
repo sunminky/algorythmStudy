@@ -2,40 +2,35 @@
 import sys
 from copy import deepcopy
 
-width = int(sys.stdin.readline())
-field = [list(map(int, sys.stdin.readline().split())) for _ in range(width)]
 
+def count(flag, width, field):
+    new_field = deepcopy(field)
+    cnt = 0
 
-def countEach(field):
-    return min(sum([e.count(0) for e in field]), sum([e.count(1) for e in field]))
-
-
-def flip(flag) -> list:
-    result = deepcopy(field)
-
-    # 가로 뒤집기
+    # 뒤집기
     for row in range(width):
         if flag & (1 << row):
-            for col in range(width):
-                result[row][col] = (result[row][col] + 1) % 2
+            cnt += 1
 
-    # 세로 뒤집기
+            for col in range(width):
+                new_field[row][col] = not new_field[row][col]
+
     for col in range(width):
         if flag & (1 << (col + width)):
+            cnt += 1
+
             for row in range(width):
-                result[row][col] = (result[row][col] + 1) % 2
+                new_field[row][col] = not new_field[row][col]
 
-    return result
-
-
-def game(flag, remain):
-    if not remain:
-        return countEach(flip(flag)) + bin(flag)[2:].count('1')
-
-    return min(game(flag | (1 << (remain - 1)), remain - 1), game(flag, remain - 1))
+    return cnt + min(sum((e.count(True) for e in new_field)), sum((e.count(False) for e in new_field)))
 
 
 if __name__ == '__main__':
-    answer = min(game(0, width * 2), 64)
+    width = int(sys.stdin.readline())
+    field = [[True if e == '1' else False for e in sys.stdin.readline().split()] for _ in range(width)]
+    answer = 64
+
+    for i in range(1 << (width * 2)):
+        answer = min(answer, count(int(bin(i)[2:]), width, field))
 
     print(answer)
