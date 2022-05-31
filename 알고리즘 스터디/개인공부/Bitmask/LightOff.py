@@ -1,6 +1,5 @@
 # https://www.acmicpc.net/problem/14939
 import sys
-from copy import deepcopy
 
 
 def toggle(x, y, field):
@@ -17,7 +16,8 @@ def toggle(x, y, field):
 
 def check(flag, field):
     cnt = 0
-    new_field = deepcopy(field)
+    # deepcopy는 느림, 대신 슬라이싱을 사용하면 빠름
+    new_field = [field[seq][:] for seq in range(len(field))]
 
     # 첫째 줄 토글
     for col in range(10):
@@ -42,6 +42,6 @@ if __name__ == '__main__':
     answer = 100
 
     for i in range(1 << 10):
-        answer = min(answer, check(int(bin(i)[2:]), field))
+        answer = min(answer, check(i, field))
 
     print(answer)
