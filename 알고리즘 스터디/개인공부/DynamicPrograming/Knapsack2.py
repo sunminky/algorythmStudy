@@ -2,24 +2,30 @@
 import sys
 
 if __name__ == '__main__':
-    n_stock, limit = map(int, sys.stdin.readline().split())
-    backpack = {0: 0}
+    n_element, limit = map(int, sys.stdin.readline().split())
+    elements = []
+    knapsack = {0: 0}
 
-    for _ in range(n_stock):
-        _weight, _satisfaction, _cnt = map(int, sys.stdin.readline().split())
-        package = 1
+    for _ in range(n_element):
+        _weight, _happiness, _count = map(int, sys.stdin.readline().split())
 
-        while _cnt > 0:
-            prev_backpack = backpack.copy()
-            cur_package = min(package, _cnt)
+        pow_count = 1
 
-            for weight, satisfaction in prev_backpack.items():
-                if weight + cur_package * _weight > limit:
-                    continue
-                backpack[weight + cur_package * _weight] = max(backpack.get(weight + cur_package * _weight, 0),
-                                                               cur_package * _satisfaction + satisfaction)
+        while _count >= pow_count:
+            elements.append((_weight * pow_count, _happiness * pow_count))
+            _count -= pow_count
+            pow_count <<= 1
 
-            _cnt -= cur_package
-            package <<= 1
+        if _count:
+            elements.append((_weight * _count, _happiness * _count))
 
-    print(max(backpack.values()))
+    for e in elements:
+        prev_knapsack = knapsack.copy()
+        _weight, _happiness = e
+
+        for key, value in prev_knapsack.items():
+            if key + _weight > limit:
+                continue
+            knapsack[key + _weight] = max(value + _happiness, knapsack.get(key + _weight, 0))
+
+    print(max(knapsack.values()))
