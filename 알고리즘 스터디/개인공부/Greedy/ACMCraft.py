@@ -1,4 +1,4 @@
-#https://www.acmicpc.net/problem/1005
+# https://www.acmicpc.net/problem/1005
 
 import sys
 from collections import deque
@@ -6,26 +6,31 @@ from collections import deque
 if __name__ == '__main__':
     for _ in range(int(sys.stdin.readline())):
         n_structure, n_rule = map(int, sys.stdin.readline().split())
-        structure_cost = list(map(int, sys.stdin.readline().split()))
-        path = [[] for _ in range(n_structure)]
-        build_cost = [0] * n_structure
+        costs = tuple(map(int, sys.stdin.readline().split()))
+        waiting = [0] * n_structure
+        outbound = [list() for _ in range(n_structure)]
+        inbound_cnt = [0] * n_structure
         queue = deque()
 
         for _ in range(n_rule):
-            src, dst = map(int, sys.stdin.readline().split())
+            ancestor, descendant = map(int, sys.stdin.readline().split())
 
-            path[dst-1].append(src-1)
+            outbound[ancestor - 1].append(descendant - 1)
+            inbound_cnt[descendant - 1] += 1
 
-        start = int(sys.stdin.readline())
-        queue.append(start - 1)
-        build_cost[start - 1] = structure_cost[start - 1]
+        for node in range(n_structure):
+            if inbound_cnt[node] == 0:
+                queue.append(node)
+                waiting[node] = costs[node]
 
         while queue:
-            c_node = queue.popleft()
+            cur_node = queue.popleft()
 
-            for neigh in path[c_node]:
-                if build_cost[c_node] + structure_cost[neigh] > build_cost[neigh]:
-                    build_cost[neigh] = build_cost[c_node] + structure_cost[neigh]
+            for neigh in outbound[cur_node]:
+                inbound_cnt[neigh] -= 1
+                waiting[neigh] = max(waiting[neigh], waiting[cur_node] + costs[neigh])
+
+                if inbound_cnt[neigh] == 0:
                     queue.append(neigh)
 
-        print(max(build_cost))
+        print(waiting[int(sys.stdin.readline()) - 1])
