@@ -5,13 +5,13 @@ import sys
 def find(n_num, nums) -> str:
     if n_num == 1:
         return 'A'
-    # nums[1] - nums[0] 이 0이 되면 안됨
-    if nums[0] == nums[1] and len(set(nums)) == 1:
+    if len(set(nums)) == 1:
         return nums[0]
-    if nums[0] == nums[1]:
-        return 'B'
     if n_num == 2:
         return 'A'
+    # nums[1] - nums[0] 이 0이 되면 안됨
+    if nums[1] == nums[0]:
+        return 'B'
 
     a = (nums[2] - nums[1]) // (nums[1] - nums[0])
     b = nums[1] - a * nums[0]
