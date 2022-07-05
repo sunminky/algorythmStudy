@@ -4,26 +4,21 @@ import sys
 if __name__ == '__main__':
     n_home, n_router = map(int, sys.stdin.readline().split())
     routers = sorted([int(sys.stdin.readline()) for _ in range(n_home)])
-    answer = 0
+    worst, best = 0, 1000000001
 
-    start = 0
-    end = 1000000001
+    while worst < best:
+        middle = (worst + best) // 2
+        cnt = n_router
+        prev = -1000000001  # 무조건 첫 번째 집에 공유기가 놓일 수 있게 무한의 값 세팅
 
-    while start < end:
-        middle = (start + end) // 2     # 최소 거리
-        remain_router = n_router - 1    # 남은 공유기 개수, 제일 처음 자리에 있는 공유기 제외
-        prev_idx = 0                    # 제일 처음 자리에 공유기 설치
+        for e in routers:
+            if e - prev >= middle:
+                cnt -= 1
+                prev = e
 
-        for idx in range(len(routers)):
-            if routers[idx] - routers[prev_idx] < middle:
-                continue
-            prev_idx = idx
-            remain_router -= 1
-
-        if remain_router > 0:
-            end = middle
+        if cnt > 0:
+            best = middle
         else:
-            start = middle + 1
-            answer = max(answer, middle)
+            worst = middle + 1
 
-    print(answer)
+    print(best - 1)
