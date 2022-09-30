@@ -3,7 +3,7 @@ import sys
 from collections import deque
 
 
-def check(disc, delete_map, layer, seq) -> bool:
+def check(disc, layer, seq) -> bool:
     # 값이 삭제된 경우
     if disc[layer][seq] is None:
         return False
