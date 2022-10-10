@@ -19,19 +19,15 @@ def find(tree, nth_node, rank):
     if nth_node >= tree_len:
         print(nth_node - tree_len + 1)
         tree[nth_node] -= 1
-
-        return nth_node >> 1
     else:
         portion1 = tree[nth_node * 2]
 
         if portion1 >= rank:
-            idx = find(tree, nth_node * 2, rank)
+            find(tree, nth_node * 2, rank)
         else:
-            idx = find(tree, nth_node * 2 + 1, rank - portion1)
+            find(tree, nth_node * 2 + 1, rank - portion1)
 
-        tree[idx] -= 1
-
-        return idx >> 1
+        tree[nth_node] -= 1
 
 
 if __name__ == '__main__':
