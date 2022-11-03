@@ -1,28 +1,27 @@
-#https://www.acmicpc.net/problem/1992
+# https://www.acmicpc.net/problem/1992
 
 import sys
 
-def divide(unit:int, x:int, y:int):
-    global field
 
-    if unit == 1:
-        print(field[y][x], end="")
-        return
+def divide(field, width, position):  # x1, y1, x2, y2
+    x1, y1, x2, y2 = position
+    total = sum((sum((field[row][col] for col in range(x1, x2))) for row in range(y1, y2)))
+
+    if total == width * width or total == 0:
+        print(field[y1][x1], end="")
     else:
-        sum_val = sum([sum(field[y+i][x:x+unit]) for i in range(unit)])
-        if sum_val == 0 or sum_val == unit**2:
-            print(field[y][x], end="")
-        else:
-            print("(", end="")
-            divide(unit // 2, x, y)
-            divide(unit // 2, x + unit // 2, y)
-            divide(unit // 2, x, y + unit // 2)
-            divide(unit // 2, x + unit // 2, y + unit // 2)
-            print(")", end="")
+        print("(", end="")
+
+        divide(field, width >> 1, (x1, y1, x1 + width // 2, y1 + width // 2))  # 좌상
+        divide(field, width >> 1, (x1 + width // 2, y1, x2, y1 + width // 2))  # 우상
+        divide(field, width >> 1, (x1, y1 + width // 2, x1 + width // 2, y2))  # 좌하
+        divide(field, width >> 1, (x1 + width // 2, y1 + width // 2, x2, y2))  # 우하
+
+        print(")", end="")
+
 
 if __name__ == '__main__':
-    global field
-    N = int(sys.stdin.readline())
-    field = [list(map(int, sys.stdin.readline().rstrip())) for _ in range(N)]
+    width = int(sys.stdin.readline())
+    field = [[int(ch) for ch in sys.stdin.readline().rstrip()] for _ in range(width)]
 
-    divide(N, 0, 0)
+    divide(field, width, (0, 0, width, width))
