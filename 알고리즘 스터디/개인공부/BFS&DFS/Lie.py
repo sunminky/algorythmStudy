@@ -1,46 +1,47 @@
 # https://www.acmicpc.net/problem/1043
-
 import sys
 from collections import deque
 
-
 if __name__ == '__main__':
     n_participant, n_party = map(int, sys.stdin.readline().split())
-    _, *discriminator = map(int, sys.stdin.readline().split())
-    neighbor = [[] for _ in range(n_participant + n_party)]
-    visited = [False] * (n_participant + n_party)
-    distort_cnt = n_party  # 뻥 칠수 있는 파티의 수
+    n_discriminator, *discriminator = map(int, sys.stdin.readline().split())
+    neigh = [set() for _ in range(n_participant)]
+    discriminators = [False] * n_participant  # 진실을 아는 사람
+    parties = [True] * n_party  # 거짓말치면 안되는 파티 표시
+    attended = [[] for _ in range(n_participant)]  # 참가자별로 참석한 파티 기록
+    visited = [False] * n_participant
 
-    # 파티에 참가한 사람과 파티를 연결지음
+    # 간선 연결
     for seq in range(n_party):
-        party_sequence = seq + n_participant
-        _, *party = map(lambda x: int(x) - 1, sys.stdin.readline().split())
+        _, *_participant = map(lambda x: int(x) - 1, sys.stdin.readline().split())
 
-        neighbor[party_sequence].extend(party)  # 파티에 참여한 사람 추가
-        
-        # 사람별로 참여한 파티 추가
-        for p in party:
-            neighbor[p].append(party_sequence)
+        for e in _participant:
+            neigh[e].update(_participant)
+            attended[e].append(seq)
 
-    # 진실을 아는 사람이 참여한 파티 체크
-    for dis in discriminator:
-        queue = deque()
-
-        if visited[dis - 1] is False:
-            queue.append(dis - 1)
+    # 진실을 아는 사람끼리 네트워크 구축
+    for e in discriminator:
+        queue = deque([e - 1])
+        visited[e - 1] = True
 
         while queue:
-            c_node = queue.popleft()
+            cur_participant = queue.popleft()
 
-            visited[c_node] = True
+            discriminators[cur_participant] = True
 
-            # 파티인 경우 1감소
-            if c_node >= n_participant:
-                distort_cnt -= 1
+            for _neight in neigh[cur_participant]:
+                if visited[_neight]:
+                    continue
 
-            for neigh in neighbor[c_node]:
-                if visited[neigh] is False:
-                    visited[neigh] = True
-                    queue.append(neigh)
+                queue.append(_neight)
+                visited[_neight] = True
 
-    print(distort_cnt)
+    # 진실을 아는  사람이 참가한 파티 컷
+    for seq, lie in enumerate(discriminators):
+        if not lie:
+            continue
+
+        for e in attended[seq]:
+            parties[e] = False
+
+    print(sum(parties))
