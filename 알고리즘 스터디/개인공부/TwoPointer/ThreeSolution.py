@@ -2,33 +2,23 @@
 import sys
 
 if __name__ == '__main__':
-    n_solution = int(sys.stdin.readline())
-    solution = sorted(map(int, sys.stdin.readline().split()))
-    answer = [3000000001, -1, -1, -1]  # 최소값, 1번 용액, 2번 용액, 3번 용액
+    _, solution = sys.stdin.readline(), sorted(map(int, sys.stdin.readline().split()))
+    answer = [3000000001, -1, -1, -1]
 
-    for seq, e in enumerate(solution):
-        start, end = 0, n_solution - 1
+    for seq in range(len(solution)):
+        pick, start, end = solution[seq], seq + 1, len(solution) - 1
 
         if answer[0] == 0:
             break
 
-        # 수정 필요
         while start < end:
-            if start == seq:
+            if answer[0] > abs(pick + solution[start] + solution[end]):
+                answer[0], answer[1], answer[2], answer[3] = abs(pick + solution[start] + solution[end]), pick, \
+                                                             solution[start], solution[end]
+
+            if pick + solution[start] + solution[end] < 0:
                 start += 1
-                continue
-
-            if end == seq:
-                end -= 1
-                continue
-
-            if abs(solution[start] + solution[end] + e) < answer[0]:
-                answer[0], answer[1], answer[2], answer[3] = abs(solution[start] + solution[end] + e), e, solution[
-                    start], solution[end]
-
-            if solution[start] + solution[end] >= -e:
-                end -= 1
             else:
-                start += 1
+                end -= 1
 
-    print(" ".join(map(str, sorted(answer[1:]))))
+    print(" ".join(map(str, answer[1:])))
