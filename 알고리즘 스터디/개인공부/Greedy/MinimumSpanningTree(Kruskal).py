@@ -33,4 +33,3 @@ if __name__ == '__main__':
         answer += _cost
 
     print(answer)
-    print(parent)
